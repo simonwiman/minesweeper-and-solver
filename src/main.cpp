@@ -1,5 +1,5 @@
 #include <raylib.h>
-#include "draw_stuff.h"
+#include "mouse_utility.h"
 #include "tile.h"
 #include "board.h"
 #include "texture_handler.h"
@@ -19,10 +19,8 @@ int main()
     SetTargetFPS(60);
     
 
-    // Test calls
-
     TextureHandler texture_handler;
-    Board board(tile_size, 16, 30);
+    Board board(tile_size, 16, 30, 99);
 
     board.init_board();
     texture_handler.init_textures(tile_size);
@@ -30,7 +28,7 @@ int main()
 
     while (!WindowShouldClose())
     {
-
+        board.update_board();
         
         BeginDrawing();
 
