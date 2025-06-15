@@ -43,3 +43,18 @@ void Tile::set_adjacent_bombs(int adjacent_bombs)
 {
     this->adjacent_bombs = adjacent_bombs;
 }
+
+void Tile::set_is_open(bool is_open)
+{
+    this->is_open = is_open;
+}
+
+void Tile::set_is_bomb(bool is_bomb)
+{
+    this->is_bomb = is_bomb;
+}
+
+void Tile::set_is_flagged(bool is_flagged)
+{
+    this->is_flagged = is_flagged;
+}

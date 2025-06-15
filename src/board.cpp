@@ -1,6 +1,7 @@
 #include "board.h"
 #include "mouse_utility.h"
 #include <raylib.h>
+#include <set>
 
 #include <iostream> // for debug
 
@@ -56,7 +57,7 @@ void Board::update_board()
         case ACTIVE:
             
             // check if any tiles were clicked
-                // if they were, reveal that tile ()
+                // if they were, reveal that tile (bomb counter should already be accurate, so only reveal and let the texture handler draw it)
 
             break;
 
@@ -90,25 +91,77 @@ void Board::activate_board(int i, int j)
  
     std::cout << "board activated, tile pressed: " << i << ", " << j << "\n";
 
-    /* Idea 1
-    create a vector of length:(board_height*board_length - 9)
-    the vector should have bombs amount of zeroes in it, and 
-    iterate over the board, initialize the tiles based on the vector, simply skip the vector (and don't increment it) if it is one of the key tiles
-    */
-    
-    /* Idea 2
-    
-    keep count of how many bombs must be distributed
 
-    keep a pool of the indexes (if one unique index combination is picked, you can't pick it again) (can do this with a unordered map)
+    std::set<Vector2> occupied_indexes;
 
-    can make the nine beggining tiles included in the map
+    for (int n=i-1; n < i+1; n++)
+    {
+        for (int k=j-1; k < j+1; k++)
+        {
+            if ( (n >= 0) && (n < board_height) && (k >= 0) && (k < board_width) )
+            {
+                occupied_indexes.insert( (Vector2){n, k} );
+                tiles[n][k].set_is_open(false);
+            }
+        }
+    }
 
-    randomly pick indexes that are allowed, make that a bomb tile
+    int bombs_left = bombs;
+    int rand_i;
+    int rand_j;
 
-    when no bombs left to distribute, go through the rest of the tiles to initialzie them
-    
-    */
+    while (bombs_left > 0)
+    {
+        rand_i = GetRandomValue(0, board_height);
+        rand_j = GetRandomValue(0, board_width);
 
+        Vector2 bomb_try = (Vector2){rand_i, rand_j};
+
+        if ( !occupied_indexes.count(bomb_try) )
+        {
+            occupied_indexes.insert(bomb_try);
+            tiles[rand_i][rand_j].set_is_bomb(true);
+            bombs_left -= 1;
+        }
+    }
+
+
+    for (int n=0; n < board_height; n++)
+    {
+        for (int k=0; k < board_width; k++)
+        {
+            init_bomb_counter(n, k);
+        }
+    }
+
+
+    // step thorugh the function you savage
 
 }
+
+void Board::init_bomb_counter(int i, int j)
+{
+    // tiles[][]
+}
+
+
+
+/* Idea 1
+create a vector of length:(board_height*board_length - 9)
+the vector should have bombs amount of zeroes in it, and 
+iterate over the board, initialize the tiles based on the vector, simply skip the vector (and don't increment it) if it is one of the key tiles
+*/
+
+/* Idea 2
+
+keep count of how many bombs must be distributed
+
+keep a pool of the indexes (if one unique index combination is picked, you can't pick it again) (can do this with a unordered map)
+
+can make the nine beginning tiles included in the map
+
+randomly pick indexes that are allowed, make that a bomb tile
+
+when no bombs left to distribute, go through the rest of the tiles to initialzie them
+
+*/

@@ -26,4 +26,5 @@ private:
 
     void activate_board(int i, int j);
     void check_to_init();
+    void init_bomb_counter(int i, int j);
 };
