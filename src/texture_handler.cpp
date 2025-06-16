@@ -49,7 +49,7 @@ void TextureHandler::draw_board(Board board)
             int adjacent_bombs = tiles[i][j].get_adjacent_bombs();
 
             assert( !(is_open && is_flagged) );
-
+            
             if (!is_open && !is_flagged)
             {
                 DrawTextureV(texture_tile_hidden, (Vector2){rect.x, rect.y}, WHITE);

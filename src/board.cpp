@@ -140,11 +140,11 @@ void Board::init_bomb_counter(int i, int j)
 {
     int bomb_counter = 0;
 
-    for (int n=i-1; n < i+1; n++)
+    for (int n=i-1; n <= i+1; n++)
     {
-        for (int k=j-1; k < j+1; k++)
+        for (int k=j-1; k <= j+1; k++)
         {
-            if ( (n >= 0) && (n < board_height) && (k >= 0) && (k < board_width) && ((n == i) && (n == j)) && tiles[n][k].get_is_bomb() ) // maybe refactor out of bounds part
+            if ( (n >= 0) && (n < board_height) && (k >= 0) && (k < board_width) && !((n == i) && (n == j)) && tiles[n][k].get_is_bomb() ) // maybe refactor out of bounds part
             {
                 bomb_counter += 1;
             }
@@ -152,7 +152,3 @@ void Board::init_bomb_counter(int i, int j)
     }
     tiles[i][j].set_adjacent_bombs(bomb_counter);
 }
-
-// step thorugh the new functions you savage
-
-// find out why adjacent bombs isn't working
