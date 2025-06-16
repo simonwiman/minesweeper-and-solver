@@ -25,6 +25,10 @@ private:
     BoardState board_state;
 
     void activate_board(int i, int j);
-    void check_to_init();
+    void check_clicks();
     void init_bomb_counter(int i, int j);
+    void open_adjacent_tiles(int i, int j);
+    void open_tile(int i, int j);
+    void place_flag(int i, int j);
+    void open_remaining_bombs();
 };

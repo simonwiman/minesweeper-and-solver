@@ -39,9 +39,7 @@ int main()
     }
 
     // Cleanup
-
     texture_handler.unload_all_textures();
     
-
     CloseWindow();
 }

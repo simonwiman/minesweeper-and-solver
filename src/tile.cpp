@@ -3,7 +3,7 @@
 #include <cassert>
 
 
-Tile::Tile(Rectangle rect, bool is_open, bool is_bomb, bool is_flagged, int adjacent_bombs)
+Tile::Tile(Rectangle rect, bool is_open, bool is_bomb, bool is_flagged, bool is_held, int adjacent_bombs)
 {
     assert( !(is_open && is_flagged) );
     
@@ -34,6 +34,11 @@ bool Tile::get_is_flagged()
     return is_flagged;
 }
 
+bool Tile::get_is_held()
+{
+    return is_held;
+}
+
 int Tile::get_adjacent_bombs()
 {
     return adjacent_bombs;
@@ -57,4 +62,14 @@ void Tile::set_is_bomb(bool is_bomb)
 void Tile::set_is_flagged(bool is_flagged)
 {
     this->is_flagged = is_flagged;
+}
+
+void Tile::set_is_held(bool is_held)
+{
+    this->is_held = is_held;
+}
+
+void Tile::update_flagged()
+{
+    is_flagged = !is_flagged;
 }

@@ -14,7 +14,22 @@ bool mouse_overlap_rectangle(Rectangle rec)
     return CheckCollisionRecs(rec, (Rectangle){(float)GetMouseX(), (float)GetMouseY(), 0, 0});
 }
 
-bool mouse_clicked_rectangle(Rectangle rec)
+bool mouse_lclicked_rectangle(Rectangle rec)
 {
     return mouse_overlap_rectangle(rec) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT);
+}
+
+bool mouse_lreleased_rectangle(Rectangle rec)
+{
+    return mouse_overlap_rectangle(rec) && IsMouseButtonReleased(MOUSE_BUTTON_LEFT);
+}
+
+bool mouse_lholding_rectangle(Rectangle rec)
+{
+    return mouse_overlap_rectangle(rec) && IsMouseButtonDown(MOUSE_BUTTON_LEFT);
+}
+
+bool mouse_rclicked_rectangle(Rectangle rec)
+{
+    return mouse_overlap_rectangle(rec) && IsMouseButtonPressed(MOUSE_BUTTON_RIGHT);
 }

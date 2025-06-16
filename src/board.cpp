@@ -32,19 +32,17 @@ std::vector<std::vector<Tile>> Board::get_tiles()
 
 void Board::init_board()
 {
-
     for (int i=0; i < board_height; i++)
     {
         std::vector<Tile> current_row;
 
         for (int j=0; j < board_width; j++)
         {
-            current_row.push_back((Tile){(Rectangle){(float)j*tile_size, (float)i*tile_size, (float)tile_size, (float)tile_size}, false, false, false, 0});
+            current_row.push_back((Tile){(Rectangle){(float)j*tile_size, (float)i*tile_size, (float)tile_size, (float)tile_size}, false, false, false, false, 0});
         }
 
         tiles.push_back(current_row);
     }
-
 }
 
 void Board::update_board()
@@ -53,14 +51,11 @@ void Board::update_board()
     switch(board_state)
     {
         case UNACTIVE:
-            check_to_init();
+            check_clicks();
             break;
 
         case ACTIVE:
-            
-        // check if any tiles were clicked
-                // if they were, reveal that tile (bomb counter should already be accurate, so only reveal and let the texture handler draw it)
-
+            check_clicks();
             break;
 
         case DEAD:
@@ -72,18 +67,33 @@ void Board::update_board()
 
 }
 
-void Board::check_to_init()
+void Board::check_clicks()
 {
     for (int i=0; i < board_height; i++)
     {
         for (int j=0; j < board_width; j++)
         {
-            if ( mouse_clicked_rectangle(tiles[i][j].get_rect()) )
+            if ( mouse_lreleased_rectangle(tiles[i][j].get_rect()) )
             {
-                tiles[i][j].set_is_open(true);
-
-                activate_board(i, j);
-                break;
+                if (board_state == UNACTIVE)
+                {
+                    activate_board(i, j);
+                    break;
+                }
+                else
+                    open_tile(i, j);
+            }
+            if ( mouse_rclicked_rectangle(tiles[i][j].get_rect()) )
+            {
+                place_flag(i, j);
+            }
+            if ( mouse_lholding_rectangle(tiles[i][j].get_rect()) )
+            {
+                tiles[i][j].set_is_held(true);
+            }
+            else
+            {
+                tiles[i][j].set_is_held(false);
             }
         }
     }
@@ -102,7 +112,6 @@ void Board::activate_board(int i, int j)
             if ( (n >= 0) && (n < board_height) && (k >= 0) && (k < board_width) )
             {
                 occupied_indexes.insert( (std::pair<int, int>){n, k} );
-                tiles[n][k].set_is_open(true);
             }
         }
     }
@@ -134,6 +143,7 @@ void Board::activate_board(int i, int j)
         }
     }
 
+    open_tile(i, j);
 }
 
 void Board::init_bomb_counter(int i, int j)
@@ -144,11 +154,67 @@ void Board::init_bomb_counter(int i, int j)
     {
         for (int k=j-1; k <= j+1; k++)
         {
-            if ( (n >= 0) && (n < board_height) && (k >= 0) && (k < board_width) && !((n == i) && (n == j)) && tiles[n][k].get_is_bomb() ) // maybe refactor out of bounds part
+            if ( (n >= 0) && (n < board_height) && (k >= 0) && (k < board_width) && !((n == i) && (k == j)) && tiles[n][k].get_is_bomb() ) // maybe refactor out of bounds part
             {
                 bomb_counter += 1;
             }
         }
     }
     tiles[i][j].set_adjacent_bombs(bomb_counter);
+}
+
+void Board::open_adjacent_tiles(int i, int j)
+{
+    for (int n=i-1; n <= i+1; n++)
+    {
+         for (int k=j-1; k <= j+1; k++)
+        {
+            if ( (n >= 0) && (n < board_height) && (k >= 0) && (k < board_width) && !((n == i) && (k == j)) ) // maybe refactor out of bounds part
+            {
+                open_tile(n, k);
+            }
+        }
+    }
+}
+
+void Board::open_tile(int i, int j)
+{
+    Tile* current_tile = &tiles[i][j];
+
+    if ( current_tile->get_is_bomb() && !current_tile->get_is_flagged() )
+    {
+        assert( !current_tile->get_is_open() );
+        current_tile->set_is_open(true);
+        board_state = DEAD;
+        // open_remaining_bombs(); need to fix the assert thing before in texture, (open + flag should be allowed, at least during texture handling + add flag not a bomb texture)
+    }
+    else if ( !current_tile->get_is_open() && !current_tile->get_is_flagged() )
+    {
+        current_tile->set_is_open(true);
+
+        if ( !current_tile->get_adjacent_bombs() )
+            open_adjacent_tiles(i, j);
+    }
+}
+
+void Board::place_flag(int i, int j)
+{
+    if ( !tiles[i][j].get_is_open() )
+    {
+        tiles[i][j].update_flagged();
+    }
+}
+
+void Board::open_remaining_bombs()
+{
+    for (int i=0; i < board_height; i++)
+    {
+        for (int j=0; j < board_width; j++)
+        {
+            if ( tiles[i][j].get_is_bomb() )
+            {
+                tiles[i][j].set_is_open(true);
+            }
+        }
+    }
 }

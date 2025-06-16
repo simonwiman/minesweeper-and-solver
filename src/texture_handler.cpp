@@ -46,11 +46,16 @@ void TextureHandler::draw_board(Board board)
             bool is_open = tiles[i][j].get_is_open();
             bool is_flagged = tiles[i][j].get_is_flagged();
             bool is_bomb = tiles[i][j].get_is_bomb();
+            bool is_held = tiles[i][j].get_is_held();
             int adjacent_bombs = tiles[i][j].get_adjacent_bombs();
 
             assert( !(is_open && is_flagged) );
             
-            if (!is_open && !is_flagged)
+            if (is_held && !is_open && !is_flagged)
+            {
+                DrawTextureV(texture_tile_0, (Vector2){rect.x, rect.y}, WHITE);
+            }
+            else if (!is_open && !is_flagged)
             {
                 DrawTextureV(texture_tile_hidden, (Vector2){rect.x, rect.y}, WHITE);
             }
