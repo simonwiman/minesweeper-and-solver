@@ -1,6 +1,8 @@
 #include <raylib.h>
 #include "texture_handler.h"
 #include <cassert>
+#include <iostream> // debug
+
 
 void TextureHandler::init_textures(int tile_size)
 {
@@ -92,8 +94,7 @@ void TextureHandler::draw_board(Board board)
                         DrawTextureV(texture_tile_8, (Vector2){rect.x, rect.y}, WHITE);
                         break;    
                 }
-            }
-            
+            }            
         }
     }
 }

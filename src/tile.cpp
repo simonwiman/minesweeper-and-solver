@@ -31,12 +31,12 @@ bool Tile::get_is_bomb()
 
 bool Tile::get_is_flagged()
 {
-    return is_bomb;
+    return is_flagged;
 }
 
 int Tile::get_adjacent_bombs()
 {
-    return is_bomb;
+    return adjacent_bombs;
 }
 
 void Tile::set_adjacent_bombs(int adjacent_bombs)

@@ -2,6 +2,8 @@
 #include "mouse_utility.h"
 #include <raylib.h>
 #include <set>
+#include <utility>
+#include <cassert>
 
 #include <iostream> // for debug
 
@@ -56,7 +58,7 @@ void Board::update_board()
 
         case ACTIVE:
             
-            // check if any tiles were clicked
+        // check if any tiles were clicked
                 // if they were, reveal that tile (bomb counter should already be accurate, so only reveal and let the texture handler draw it)
 
             break;
@@ -78,6 +80,8 @@ void Board::check_to_init()
         {
             if ( mouse_clicked_rectangle(tiles[i][j].get_rect()) )
             {
+                tiles[i][j].set_is_open(true);
+
                 activate_board(i, j);
                 break;
             }
@@ -89,19 +93,16 @@ void Board::activate_board(int i, int j)
 {
     board_state = ACTIVE;
  
-    std::cout << "board activated, tile pressed: " << i << ", " << j << "\n";
+    std::set<std::pair<int, int>> occupied_indexes;
 
-
-    std::set<Vector2> occupied_indexes;
-
-    for (int n=i-1; n < i+1; n++)
+    for (int n=i-1; n <= i+1; n++)
     {
-        for (int k=j-1; k < j+1; k++)
+        for (int k=j-1; k <= j+1; k++)
         {
             if ( (n >= 0) && (n < board_height) && (k >= 0) && (k < board_width) )
             {
-                occupied_indexes.insert( (Vector2){n, k} );
-                tiles[n][k].set_is_open(false);
+                occupied_indexes.insert( (std::pair<int, int>){n, k} );
+                tiles[n][k].set_is_open(true);
             }
         }
     }
@@ -112,10 +113,10 @@ void Board::activate_board(int i, int j)
 
     while (bombs_left > 0)
     {
-        rand_i = GetRandomValue(0, board_height);
-        rand_j = GetRandomValue(0, board_width);
+        rand_i = GetRandomValue(0, board_height - 1);
+        rand_j = GetRandomValue(0, board_width - 1);
 
-        Vector2 bomb_try = (Vector2){rand_i, rand_j};
+        std::pair<int, int> bomb_try(rand_i, rand_j);
 
         if ( !occupied_indexes.count(bomb_try) )
         {
@@ -125,7 +126,6 @@ void Board::activate_board(int i, int j)
         }
     }
 
-
     for (int n=0; n < board_height; n++)
     {
         for (int k=0; k < board_width; k++)
@@ -134,34 +134,25 @@ void Board::activate_board(int i, int j)
         }
     }
 
-
-    // step thorugh the function you savage
-
 }
 
 void Board::init_bomb_counter(int i, int j)
 {
-    // tiles[][]
+    int bomb_counter = 0;
+
+    for (int n=i-1; n < i+1; n++)
+    {
+        for (int k=j-1; k < j+1; k++)
+        {
+            if ( (n >= 0) && (n < board_height) && (k >= 0) && (k < board_width) && ((n == i) && (n == j)) && tiles[n][k].get_is_bomb() ) // maybe refactor out of bounds part
+            {
+                bomb_counter += 1;
+            }
+        }
+    }
+    tiles[i][j].set_adjacent_bombs(bomb_counter);
 }
 
+// step thorugh the new functions you savage
 
-
-/* Idea 1
-create a vector of length:(board_height*board_length - 9)
-the vector should have bombs amount of zeroes in it, and 
-iterate over the board, initialize the tiles based on the vector, simply skip the vector (and don't increment it) if it is one of the key tiles
-*/
-
-/* Idea 2
-
-keep count of how many bombs must be distributed
-
-keep a pool of the indexes (if one unique index combination is picked, you can't pick it again) (can do this with a unordered map)
-
-can make the nine beginning tiles included in the map
-
-randomly pick indexes that are allowed, make that a bomb tile
-
-when no bombs left to distribute, go through the rest of the tiles to initialzie them
-
-*/
+// find out why adjacent bombs isn't working
