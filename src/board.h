@@ -20,7 +20,7 @@ private:
     const int tile_size;
     const int board_height;
     const int board_width;
-    const int bombs;
+    int bombs;
     std::vector<std::vector<Tile>> tiles;
     BoardState board_state;
 

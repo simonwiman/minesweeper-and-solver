@@ -8,7 +8,17 @@
 #include <iostream> // for debug
 
 
-Board::Board(int size, int height, int width, int nr_of_bombs) : tile_size(size), board_height(height), board_width(width), bombs(nr_of_bombs), board_state(UNACTIVE) {}
+Board::Board(int size, int height, int width, int nr_of_bombs) : tile_size(size), board_height(height), board_width(width), board_state(UNACTIVE)
+{
+    if ( height*width - 9 < nr_of_bombs )
+    {
+        bombs = height*width - 9;
+    }
+    else
+    {
+        bombs = nr_of_bombs;
+    }
+}
 
 const int Board::get_tile_size()
 {
