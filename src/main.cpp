@@ -18,13 +18,11 @@ int main()
     InitWindow(screen_width, screen_height, "Minesweeper");
     SetTargetFPS(60);
     
-
     TextureHandler texture_handler;
     Board board(tile_size, 16, 30, 99);
 
     board.init_board();
     texture_handler.init_textures(tile_size);
-
 
     while (!WindowShouldClose())
     {

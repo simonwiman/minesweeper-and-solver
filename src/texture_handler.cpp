@@ -61,7 +61,7 @@ void TextureHandler::draw_board(Board board)
             {
                 DrawTextureV(texture_tile_hidden, (Vector2){rect.x, rect.y}, WHITE);
             }
-            else if (!is_open && is_flagged)
+            else if (is_flagged)
             {
                 DrawTextureV(texture_tile_flag, (Vector2){rect.x, rect.y}, WHITE);
             }

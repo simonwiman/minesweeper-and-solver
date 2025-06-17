@@ -31,4 +31,6 @@ private:
     void open_tile(int i, int j);
     void place_flag(int i, int j);
     void open_remaining_bombs();
+    bool game_complete();
+    void flag_remaining();
 };

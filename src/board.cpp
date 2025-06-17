@@ -55,10 +55,15 @@ void Board::update_board()
 
         case ACTIVE:
             check_clicks();
+
+            if ( game_complete() )
+            {
+                flag_remaining();
+            }
+
             break;
 
         case DEAD:
-            
             break;
     }
 }
@@ -210,6 +215,35 @@ void Board::open_remaining_bombs()
             if ( tiles[i][j].get_is_bomb() )
             {
                 tiles[i][j].set_is_open(true);
+            }
+        }
+    }
+}
+
+bool Board::game_complete()
+{
+    for (int i=0; i < board_height; i++)
+    {
+        for (int j=0; j < board_width; j++)
+        {
+            if ( !tiles[i][j].get_is_bomb() && !tiles[i][j].get_is_open() )
+            {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+void Board::flag_remaining()
+{
+    for (int i=0; i < board_height; i++)
+    {
+        for (int j=0; j < board_width; j++)
+        {
+            if ( tiles[i][j].get_is_bomb() )
+            {
+                tiles[i][j].set_is_flagged(true);
             }
         }
     }
