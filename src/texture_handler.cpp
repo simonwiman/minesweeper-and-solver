@@ -9,6 +9,7 @@ void TextureHandler::init_textures(int tile_size)
     texture_tile_hidden = LoadTexture("assets/textures/tile_hidden.png");
     texture_tile_bomb = LoadTexture("assets/textures/tile_bomb.png");
     texture_tile_flag = LoadTexture("assets/textures/tile_flag.png");
+    texture_tile_hovered = LoadTexture("assets/textures/tile_hovered.png");
     texture_tile_0 = LoadTexture("assets/textures/tile_0.png");
     texture_tile_1 = LoadTexture("assets/textures/tile_1.png");
     texture_tile_2 = LoadTexture("assets/textures/tile_2.png");
@@ -22,6 +23,7 @@ void TextureHandler::init_textures(int tile_size)
     assert((texture_tile_hidden.width == tile_size) && (texture_tile_hidden.height == tile_size));
     assert((texture_tile_bomb.width == tile_size) && (texture_tile_bomb.height == tile_size));
     assert((texture_tile_flag.width == tile_size) && (texture_tile_flag.height == tile_size));
+    assert((texture_tile_hovered.width == tile_size) && (texture_tile_hovered.height == tile_size));
     assert((texture_tile_0.width == tile_size) && (texture_tile_0.height == tile_size));
     assert((texture_tile_1.width == tile_size) && (texture_tile_1.height == tile_size));
     assert((texture_tile_2.width == tile_size) && (texture_tile_2.height == tile_size));
@@ -46,14 +48,14 @@ void TextureHandler::draw_board(Board board)
             bool is_open = tiles[i][j].get_is_open();
             bool is_flagged = tiles[i][j].get_is_flagged();
             bool is_bomb = tiles[i][j].get_is_bomb();
-            bool is_held = tiles[i][j].get_is_held();
+            bool is_hovered = tiles[i][j].get_is_hovered();
             int adjacent_bombs = tiles[i][j].get_adjacent_bombs();
 
-            assert( !(is_open && is_flagged) );
+            // assert( !(is_open && is_flagged) );
             
-            if (is_held && !is_open && !is_flagged)
+            if (is_hovered && !is_open && !is_flagged)
             {
-                DrawTextureV(texture_tile_0, (Vector2){rect.x, rect.y}, WHITE);
+                DrawTextureV(texture_tile_hovered, (Vector2){rect.x, rect.y}, WHITE);
             }
             else if (!is_open && !is_flagged)
             {
@@ -109,6 +111,7 @@ void TextureHandler::unload_all_textures()
     UnloadTexture(texture_tile_hidden);
     UnloadTexture(texture_tile_bomb);
     UnloadTexture(texture_tile_flag);
+    UnloadTexture(texture_tile_hovered);
     UnloadTexture(texture_tile_0);
     UnloadTexture(texture_tile_1);
     UnloadTexture(texture_tile_2);

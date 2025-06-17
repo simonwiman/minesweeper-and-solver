@@ -15,6 +15,7 @@ private:
     Texture2D texture_tile_hidden;
     Texture2D texture_tile_bomb;
     Texture2D texture_tile_flag;
+    Texture2D texture_tile_hovered;
     Texture2D texture_tile_0;
     Texture2D texture_tile_1;
     Texture2D texture_tile_2;

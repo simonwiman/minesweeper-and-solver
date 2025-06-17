@@ -47,7 +47,6 @@ void Board::init_board()
 
 void Board::update_board()
 {
-    
     switch(board_state)
     {
         case UNACTIVE:
@@ -59,12 +58,9 @@ void Board::update_board()
             break;
 
         case DEAD:
-
-            // do not check the tiles, keep state (on death, update the board once accordingly)
             
             break;
     }
-
 }
 
 void Board::check_clicks()
@@ -73,7 +69,7 @@ void Board::check_clicks()
     {
         for (int j=0; j < board_width; j++)
         {
-            if ( mouse_lreleased_rectangle(tiles[i][j].get_rect()) )
+            if ( mouse_lclicked_rectangle(tiles[i][j].get_rect()) )
             {
                 if (board_state == UNACTIVE)
                 {
@@ -87,13 +83,13 @@ void Board::check_clicks()
             {
                 place_flag(i, j);
             }
-            if ( mouse_lholding_rectangle(tiles[i][j].get_rect()) )
+            if ( mouse_overlap_rectangle(tiles[i][j].get_rect()) )
             {
-                tiles[i][j].set_is_held(true);
+                tiles[i][j].set_is_hovered(true);
             }
             else
             {
-                tiles[i][j].set_is_held(false);
+                tiles[i][j].set_is_hovered(false);
             }
         }
     }
@@ -186,7 +182,7 @@ void Board::open_tile(int i, int j)
         assert( !current_tile->get_is_open() );
         current_tile->set_is_open(true);
         board_state = DEAD;
-        // open_remaining_bombs(); need to fix the assert thing before in texture, (open + flag should be allowed, at least during texture handling + add flag not a bomb texture)
+        open_remaining_bombs();
     }
     else if ( !current_tile->get_is_open() && !current_tile->get_is_flagged() )
     {
