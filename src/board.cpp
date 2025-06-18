@@ -190,9 +190,7 @@ void Board::open_adjacent_tiles(int i, int j)
         for (int k=j-1; k <= j+1; k++)
         {
             if ( (n >= 0) && (n < board_height) && (k >= 0) && (k < board_width) && !((n == i) && (k == j)) )
-            {
                 open_tile(n, k);
-            }
         }
     }
 }

@@ -2,11 +2,7 @@
 #include <cassert>
 
 
-Solver::Solver(Board* minesweeper_board) : board(minesweeper_board)
-{
-
-    // board = minesweeper_board;
-}
+Solver::Solver(Board* minesweeper_board) : board(minesweeper_board) {}
 
 void Solver::solve()
 {
@@ -29,8 +25,6 @@ void Solver::start_solve()
 
 void Solver::solve_iteration()
 {
-    bool break_flag = false;
-
     for (int i=0; i < board->get_board_height(); i++)
     {
         for (int j=0; j < board->get_board_width(); j++)
@@ -38,16 +32,9 @@ void Solver::solve_iteration()
             if ( (*board->get_tiles())[i][j].get_is_open() && (*board->get_tiles())[i][j].get_adjacent_bombs() )
             {
                 simple_rule_flag(i, j);
-
-                if ( simple_rule_click(i, j) )
-                {
-                    break_flag = true;
-                    break;
-                }
+                simple_rule_click(i, j);
             }
         }
-        if ( break_flag )
-            break;
     }
 }
 
@@ -99,6 +86,7 @@ bool Solver::simple_rule_click(int i, int j)
 
     int adj_bombs = (*tiles)[i][j].get_adjacent_bombs();
     int planted_flags = 0;
+    int clickable_tiles = 0;
 
     for (int n=i-1; n <= i+1; n++)
     {
@@ -108,18 +96,18 @@ bool Solver::simple_rule_click(int i, int j)
             {                
                 if ( (*tiles)[n][k].get_is_flagged() )
                     planted_flags++;
+                if ( !(*tiles)[n][k].get_is_open() && !(*tiles)[n][k].get_is_flagged() )
+                    clickable_tiles++;
             }
         }
     }
 
-    assert( planted_flags <= adj_bombs );
-
-    if ( planted_flags == adj_bombs )
+    if ( planted_flags == adj_bombs && clickable_tiles )
     {
         click_possible(i, j);
         return true;
     }
-        
+
     return false;
 }
 
@@ -136,7 +124,7 @@ void Solver::click_possible(int i, int j)
                 if ( !(*tiles)[n][k].get_is_open() && !(*tiles)[n][k].get_is_flagged() )
                 {
                     assert( !(*tiles)[n][k].get_is_bomb() );
-                    (*tiles)[n][k].set_is_open(true);
+                    board->open_tile(n, k);
                 }
             }
         }
