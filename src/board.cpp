@@ -35,9 +35,14 @@ const int Board::get_board_width()
     return board_width;
 }
 
-std::vector<std::vector<Tile>> Board::get_tiles()
+std::vector<std::vector<Tile>>* Board::get_tiles()
 {
-    return tiles;
+    return &tiles;
+}
+
+BoardState Board::get_board_state()
+{
+    return board_state;
 }
 
 void Board::init_board()
@@ -69,11 +74,15 @@ void Board::update_board()
             if ( game_complete() )
             {
                 flag_remaining();
+                board_state = COMPLETE;
             }
 
             break;
 
         case DEAD:
+            break;
+
+        case COMPLETE:
             break;
     }
 }
@@ -165,7 +174,7 @@ void Board::init_bomb_counter(int i, int j)
     {
         for (int k=j-1; k <= j+1; k++)
         {
-            if ( (n >= 0) && (n < board_height) && (k >= 0) && (k < board_width) && !((n == i) && (k == j)) && tiles[n][k].get_is_bomb() ) // maybe refactor out of bounds part
+            if ( (n >= 0) && (n < board_height) && (k >= 0) && (k < board_width) && !((n == i) && (k == j)) && tiles[n][k].get_is_bomb() )
             {
                 bomb_counter += 1;
             }
@@ -178,9 +187,9 @@ void Board::open_adjacent_tiles(int i, int j)
 {
     for (int n=i-1; n <= i+1; n++)
     {
-         for (int k=j-1; k <= j+1; k++)
+        for (int k=j-1; k <= j+1; k++)
         {
-            if ( (n >= 0) && (n < board_height) && (k >= 0) && (k < board_width) && !((n == i) && (k == j)) ) // maybe refactor out of bounds part
+            if ( (n >= 0) && (n < board_height) && (k >= 0) && (k < board_width) && !((n == i) && (k == j)) )
             {
                 open_tile(n, k);
             }

@@ -3,6 +3,7 @@
 #include "tile.h"
 #include "board.h"
 #include "texture_handler.h"
+#include "solver.h"
 #include <iostream> // for debug
 #include <cassert>
 
@@ -24,10 +25,16 @@ int main()
     board.init_board();
     texture_handler.init_textures(tile_size);
 
+    Solver solver(&board);
+
+    solver.start_solve();
+
     while (!WindowShouldClose())
     {
-        board.update_board();
+        // board.update_board();
         
+        solver.solve_iteration();
+
         BeginDrawing();
 
             ClearBackground(dark_green);

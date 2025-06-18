@@ -3,7 +3,7 @@
 #include "tile.h"
 #include <vector>
 
-typedef enum BoardState { UNACTIVE = 0, ACTIVE, DEAD } BoardState;
+typedef enum BoardState { UNACTIVE = 0, ACTIVE, DEAD, COMPLETE } BoardState;
 
 class Board
 {
@@ -14,7 +14,11 @@ public:
     const int get_tile_size();
     const int get_board_height();
     const int get_board_width();
-    std::vector<std::vector<Tile>> get_tiles();
+    BoardState get_board_state();
+    std::vector<std::vector<Tile>>* get_tiles();
+    void place_flag(int i, int j);
+    void open_tile(int i, int j);
+    void activate_board(int i, int j);
 
 private:
     const int tile_size;
@@ -24,12 +28,9 @@ private:
     std::vector<std::vector<Tile>> tiles;
     BoardState board_state;
 
-    void activate_board(int i, int j);
     void check_clicks();
     void init_bomb_counter(int i, int j);
     void open_adjacent_tiles(int i, int j);
-    void open_tile(int i, int j);
-    void place_flag(int i, int j);
     void open_remaining_bombs();
     bool game_complete();
     void flag_remaining();

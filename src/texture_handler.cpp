@@ -38,18 +38,18 @@ void TextureHandler::init_textures(int tile_size)
 void TextureHandler::draw_board(Board board)
 {
 
-    std::vector<std::vector<Tile>> tiles = board.get_tiles();
+    std::vector<std::vector<Tile>> *tiles = board.get_tiles();
 
     for (int i=0; i < board.get_board_height(); i++)
     {
         for (int j=0; j < board.get_board_width(); j++)
         {
-            Rectangle rect = tiles[i][j].get_rect();
-            bool is_open = tiles[i][j].get_is_open();
-            bool is_flagged = tiles[i][j].get_is_flagged();
-            bool is_bomb = tiles[i][j].get_is_bomb();
-            bool is_hovered = tiles[i][j].get_is_hovered();
-            int adjacent_bombs = tiles[i][j].get_adjacent_bombs();
+            Rectangle rect = (*tiles)[i][j].get_rect();
+            bool is_open = (*tiles)[i][j].get_is_open();
+            bool is_flagged = (*tiles)[i][j].get_is_flagged();
+            bool is_bomb = (*tiles)[i][j].get_is_bomb();
+            bool is_hovered = (*tiles)[i][j].get_is_hovered();
+            int adjacent_bombs = (*tiles)[i][j].get_adjacent_bombs();
 
             // assert( !(is_open && is_flagged) );
             
