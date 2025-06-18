@@ -20,7 +20,7 @@ void Solver::solve()
 
 void Solver::start_solve()
 {
-    board->activate_board(10, 10);
+    board->activate_board(board->get_board_height()/2, board->get_board_width()/2);
 }
 
 void Solver::solve_iteration()
