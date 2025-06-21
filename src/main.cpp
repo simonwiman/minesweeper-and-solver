@@ -33,7 +33,8 @@ int main()
     {
         // board.update_board();
         
-        solver.solve_iteration();
+        if ( board.get_board_state() != DEAD )
+            solver.solve_iteration();
 
         BeginDrawing();
 
