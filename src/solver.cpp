@@ -210,8 +210,6 @@ void Solver::educated_guess_click()
         std::pair<int, int> tile = get_first_adj_clickable(i, j);
 
         board->open_tile(tile.first, tile.second);
-
-        std::cout << "i guessed: " << tile.first << ", " << tile.second << "\n";
     }
     else
     {
