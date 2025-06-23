@@ -15,10 +15,13 @@ public:
     const int get_board_height();
     const int get_board_width();
     BoardState get_board_state();
+    void set_board_state(BoardState board_state);
     std::vector<std::vector<Tile>>* get_tiles();
     void place_flag(int i, int j);
     void open_tile(int i, int j);
     void activate_board(int i, int j);
+    bool game_complete();
+    void flag_remaining();
 
 private:
     const int tile_size;
@@ -32,6 +35,4 @@ private:
     void init_bomb_counter(int i, int j);
     void open_adjacent_tiles(int i, int j);
     void open_remaining_bombs();
-    bool game_complete();
-    void flag_remaining();
 };

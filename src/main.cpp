@@ -20,7 +20,7 @@ int main()
     SetTargetFPS(60);
     
     TextureHandler texture_handler;
-    Board board(tile_size, 16, 30, 99);
+    Board board(tile_size, 10, 10, 9);
 
     board.init_board();
     texture_handler.init_textures(tile_size);
@@ -29,20 +29,59 @@ int main()
 
     solver.start_solve();
 
-    while (!WindowShouldClose())
+    // L0L
+    int completed = 0;
+    
+    for (int i=0; i < 100; i++)
     {
-        // board.update_board();
+        Board board(tile_size, 16, 30, 99);
+        board.init_board();
+
+        Solver solver(&board);
+
+        solver.solve();
         
-        if ( board.get_board_state() != DEAD )
-            solver.solve_iteration();
+        if ( board.get_board_state() == COMPLETE )
+        {
+            completed++;
+        }
 
         BeginDrawing();
 
             ClearBackground(dark_green);
             texture_handler.draw_board(board);
-                    
+                
         EndDrawing();
     }
+
+    std::cout << "Completed boards: " << completed << "\n";
+    // L0L
+
+
+    // while (!WindowShouldClose())
+    // {
+    //     // board.update_board();
+        
+    //     if ( board.game_complete() )
+    //     {
+    //         board.flag_remaining();
+    //         board.set_board_state(COMPLETE);
+    //     }
+
+    //     if ( board.get_board_state() != DEAD )
+    //         solver.solve_iteration();
+
+    //     BeginDrawing();
+
+    //         ClearBackground(dark_green);
+    //         texture_handler.draw_board(board);
+                    
+    //     EndDrawing();
+
+    //     std::cout << board.get_board_state() << "\n";
+    //     // std::cout << COMPLETE << "\n";
+
+    // }
 
     // Cleanup
     texture_handler.unload_all_textures();

@@ -10,14 +10,18 @@ Solver::Solver(Board* minesweeper_board) : board(minesweeper_board) {}
 
 void Solver::solve()
 {
-
     start_solve();
 
     while( board->get_board_state() == ACTIVE )
     {
         solve_iteration();
-    }
 
+        if ( board->game_complete() )
+        {
+            board->flag_remaining();
+            board->set_board_state(COMPLETE);
+        }
+    }
 }
 
 void Solver::start_solve()
@@ -34,6 +38,11 @@ void Solver::solve_iteration()
     {
         for (int j=0; j < board->get_board_width(); j++)
         {
+            if ( board->game_complete() )
+                return;
+
+            assert( !((*board->get_tiles())[i][j].get_is_flagged() && (*board->get_tiles())[i][j].get_is_open()) );
+
             if ( (*board->get_tiles())[i][j].get_is_open() && (*board->get_tiles())[i][j].get_adjacent_bombs() )
             {
                 bool current_flag_progress = simple_rule_flag(i, j);
@@ -74,7 +83,7 @@ bool Solver::simple_rule_flag(int i, int j)
     }
 
     assert( possible_bombs >= adj_bombs );
-
+    
     if ( possible_bombs == adj_bombs && flagged_tiles != possible_bombs )
     {
         flag_all_adjacent(i , j);
@@ -155,6 +164,7 @@ void Solver::click_possible(int i, int j)
 void Solver::educated_guess_click()
 {
     std::vector<std::pair<std::pair<int, int>, int>> probabilities;
+    std::vector<std::pair<int, int>> unknown_probabilties;
 
     for (int i=0; i < board->get_board_height(); i++)
     {
@@ -170,33 +180,49 @@ void Solver::educated_guess_click()
                 flagged = count_adj_flagged(i, j);
                 choices = (*board->get_tiles())[i][j].get_adjacent_bombs() - flagged;
 
-                if ( clickable && choices )
+                if ( clickable )
                 {
                     probabilities.push_back((std::pair<std::pair<int, int>, int>){(std::pair<int, int>){i, j}, choices/clickable});
                 }
             }
+            else if ( !(*board->get_tiles())[i][j].get_is_open() && !(*board->get_tiles())[i][j].get_is_flagged() )
+            {
+                unknown_probabilties.push_back((std::pair<int, int>){i, j});
+            }
         }
     }
 
-    assert( probabilities.size() );
-    std::pair<std::pair<int, int>, int>* lowest_prob = &probabilities[0];
-
-    for ( std::pair<std::pair<int, int>, int> item : probabilities )
+    if ( probabilities.size() )
     {
-        if ( item.second < (*lowest_prob).second )
+        std::pair<std::pair<int, int>, int>* lowest_prob = &probabilities[0];
+
+        for ( std::pair<std::pair<int, int>, int> item : probabilities )
         {
-            lowest_prob = &item;
+            if ( item.second < (*lowest_prob).second )
+            {
+                lowest_prob = &item;
+            }
         }
+
+        int i = (*lowest_prob).first.first;
+        int j = (*lowest_prob).first.second;
+
+        std::pair<int, int> tile = get_first_adj_clickable(i, j);
+
+        board->open_tile(tile.first, tile.second);
+
+        std::cout << "i guessed: " << tile.first << ", " << tile.second << "\n";
     }
+    else
+    {
+        assert( unknown_probabilties.size() ); // (we are doomed)
 
-    int i = (*lowest_prob).first.first;
-    int j = (*lowest_prob).first.second;
+        int i = unknown_probabilties[0].first;  
+        int j = unknown_probabilties[0].second; 
 
-    std::pair<int, int> tile = get_first_adj_clickable(i, j);
-
-    board->open_tile(tile.first, tile.second);
-
-    std::cout << "i guessed: " << tile.first << ", " << tile.second << "\n";
+        board->open_tile(i, j);
+    }
+    
 }
 
 int Solver::count_adj_clickable(int i, int j)
@@ -259,5 +285,5 @@ std::pair<int, int> Solver::get_first_adj_clickable(int i, int j)
             }
         }
     }
-    throw "no clickable tiles";
+    throw "no clickable tiles"; // L0L
 }

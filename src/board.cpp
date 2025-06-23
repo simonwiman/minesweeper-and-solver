@@ -45,6 +45,11 @@ BoardState Board::get_board_state()
     return board_state;
 }
 
+void Board::set_board_state(BoardState board_state)
+{
+    this->board_state = board_state;
+}
+
 void Board::init_board()
 {
     for (int i=0; i < board_height; i++)
