@@ -49,7 +49,7 @@ int main()
         BeginDrawing();
 
             ClearBackground(dark_green);
-            texture_handler.draw_board(board);
+            texture_handler.draw_board(&board);
                 
         EndDrawing();
     }

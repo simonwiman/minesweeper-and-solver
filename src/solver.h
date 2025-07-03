@@ -3,8 +3,6 @@
 #include "board.h"
 
 
-
-
 class Solver
 {
 public:

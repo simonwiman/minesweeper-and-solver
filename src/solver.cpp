@@ -38,9 +38,6 @@ void Solver::solve_iteration()
     {
         for (int j=0; j < board->get_board_width(); j++)
         {
-            if ( board->game_complete() )
-                return;
-
             assert( !((*board->get_tiles())[i][j].get_is_flagged() && (*board->get_tiles())[i][j].get_is_open()) );
 
             if ( (*board->get_tiles())[i][j].get_is_open() && (*board->get_tiles())[i][j].get_adjacent_bombs() )
@@ -211,10 +208,8 @@ void Solver::educated_guess_click()
 
         board->open_tile(tile.first, tile.second);
     }
-    else
+    else if ( unknown_probabilties.size() )
     {
-        assert( unknown_probabilties.size() ); // (we are doomed)
-
         int i = unknown_probabilties[0].first;  
         int j = unknown_probabilties[0].second; 
 

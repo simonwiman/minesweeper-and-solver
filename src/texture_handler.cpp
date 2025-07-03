@@ -35,14 +35,14 @@ void TextureHandler::init_textures(int tile_size)
     assert((texture_tile_8.width == tile_size) && (texture_tile_8.height == tile_size));
 }
 
-void TextureHandler::draw_board(Board board)
+void TextureHandler::draw_board(Board* board)
 {
 
-    std::vector<std::vector<Tile>> *tiles = board.get_tiles();
+    std::vector<std::vector<Tile>> *tiles = board->get_tiles();
 
-    for (int i=0; i < board.get_board_height(); i++)
+    for (int i=0; i < board->get_board_height(); i++)
     {
-        for (int j=0; j < board.get_board_width(); j++)
+        for (int j=0; j < board->get_board_width(); j++)
         {
             Rectangle rect = (*tiles)[i][j].get_rect();
             bool is_open = (*tiles)[i][j].get_is_open();
