@@ -22,6 +22,7 @@ public:
     void activate_board(int i, int j);
     bool game_complete();
     void flag_remaining();
+    bool valid_index(int i, int j);
 
 private:
     const int tile_size;

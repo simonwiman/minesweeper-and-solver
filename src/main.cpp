@@ -4,6 +4,7 @@
 #include "board.h"
 #include "texture_handler.h"
 #include "solver.h"
+#include "backtrack_solver.h"
 #include <iostream> // for debug
 #include <cassert>
 
@@ -20,65 +21,86 @@ int main()
     SetTargetFPS(60);
     
     TextureHandler texture_handler;
-    Board board(tile_size, 10, 10, 9);
+    Board board(tile_size, 16, 30, 99);
 
     board.init_board();
     texture_handler.init_textures(tile_size);
 
-    Solver solver(&board);
 
-    solver.start_solve();
+    // L0000L
 
-    // L0L
-    int completed = 0;
+    BacktrackSolver bsolver(&board);
+
+    bsolver.start_solve();
+
+    bsolver.solve_iteration();
+
+    BeginDrawing();
+
+        ClearBackground(dark_green);
+        texture_handler.draw_board(&board);
+            
+    EndDrawing();
+
+    while (true) {}
+
+    // L0000L
+
+
+    // Solver solver(&board);
+
+    // solver.start_solve();
+
+    // // L0L
+    // int completed = 0;
     
-    for (int i=0; i < 100; i++)
-    {
-        Board board(tile_size, 16, 30, 99);
-        board.init_board();
+    // for (int i=0; i < 100; i++)
+    // {
+    //     Board board(tile_size, 16, 30, 99);
+    //     board.init_board();
 
-        Solver solver(&board);
+    //     Solver solver(&board);
 
-        solver.solve();
+    //     solver.solve();
         
-        if ( board.get_board_state() == COMPLETE )
-        {
-            completed++;
-        }
+    //     if ( board.get_board_state() == COMPLETE )
+    //     {
+    //         completed++;
+    //     }
 
-        BeginDrawing();
+    //     BeginDrawing();
 
-            ClearBackground(dark_green);
-            texture_handler.draw_board(&board);
+    //         ClearBackground(dark_green);
+    //         texture_handler.draw_board(&board);
                 
-        EndDrawing();
-    }
+    //     EndDrawing();
+    // }
 
-    std::cout << "Completed boards: " << completed << "\n";
+    // std::cout << "Completed boards: " << completed << "\n";
     // L0L
 
 
     // while (!WindowShouldClose())
     // {
-    //     // board.update_board();
+    //     board.update_board();
         
-    //     if ( board.game_complete() )
-    //     {
-    //         board.flag_remaining();
-    //         board.set_board_state(COMPLETE);
-    //     }
+    //     // if ( board.game_complete() )
+    //     // {
+    //     //     board.flag_remaining();
+    //     //     board.set_board_state(COMPLETE);
+    //     // }
 
-    //     if ( board.get_board_state() != DEAD )
-    //         solver.solve_iteration();
+    //     // if ( board.get_board_state() != DEAD )
+    //     //     solver.solve_iteration();
 
     //     BeginDrawing();
 
     //         ClearBackground(dark_green);
-    //         texture_handler.draw_board(board);
+    //         texture_handler.draw_board(&board);
                     
     //     EndDrawing();
 
-    //     std::cout << board.get_board_state() << "\n";
+        
     //     // std::cout << COMPLETE << "\n";
 
     // }

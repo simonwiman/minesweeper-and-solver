@@ -69,7 +69,7 @@ bool Solver::simple_rule_flag(int i, int j)
     {
         for (int k=j-1; k <= j+1; k++)
         {
-            if ( (n >= 0) && (n < board->get_board_height()) && (k >= 0) && (k < board->get_board_width()) && !((n == i) && (k == j)) )
+            if ( board->valid_index(n, k) && !((n == i) && (k == j)) )
             {                
                 if ( !(*tiles)[n][k].get_is_open() )
                     possible_bombs++;
@@ -98,7 +98,7 @@ void Solver::flag_all_adjacent(int i , int j)
     {
         for (int k=j-1; k <= j+1; k++)
         {
-            if ( (n >= 0) && (n < board->get_board_height()) && (k >= 0) && (k < board->get_board_width()) && !((n == i) && (k == j)) )
+            if ( board->valid_index(n, k) && !((n == i) && (k == j)) )
             {                
                 if ( !(*tiles)[n][k].get_is_open() && !(*tiles)[n][k].get_is_flagged() )
                     board->place_flag(n, k);
@@ -119,7 +119,7 @@ bool Solver::simple_rule_click(int i, int j)
     {
         for (int k=j-1; k <= j+1; k++)
         {
-            if ( (n >= 0) && (n < board->get_board_height()) && (k >= 0) && (k < board->get_board_width()) && !((n == i) && (k == j)) )
+            if ( board->valid_index(n, k) && !((n == i) && (k == j)) )
             {                
                 if ( (*tiles)[n][k].get_is_flagged() )
                     planted_flags++;
@@ -146,7 +146,7 @@ void Solver::click_possible(int i, int j)
     {
         for (int k=j-1; k <= j+1; k++)
         {
-            if ( (n >= 0) && (n < board->get_board_height()) && (k >= 0) && (k < board->get_board_width()) && !((n == i) && (k == j)) )
+            if ( board->valid_index(n, k) && !((n == i) && (k == j)) )
             {                
                 if ( !(*tiles)[n][k].get_is_open() && !(*tiles)[n][k].get_is_flagged() )
                 {
@@ -227,7 +227,7 @@ int Solver::count_adj_clickable(int i, int j)
     {
         for (int k=j-1; k <= j+1; k++)
         {
-            if ( (n >= 0) && (n < board->get_board_height()) && (k >= 0) && (k < board->get_board_width()) && !((n == i) && (k == j)) )
+            if ( board->valid_index(n, k) && !((n == i) && (k == j)) )
             {                
                 if ( !(*tiles)[n][k].get_is_open() && !(*tiles)[n][k].get_is_flagged() )
                 {
@@ -248,7 +248,7 @@ int Solver::count_adj_flagged(int i, int j)
     {
         for (int k=j-1; k <= j+1; k++)
         {
-            if ( (n >= 0) && (n < board->get_board_height()) && (k >= 0) && (k < board->get_board_width()) && !((n == i) && (k == j)) )
+            if ( board->valid_index(n, k) && !((n == i) && (k == j)) )
             {                
                 if ( (*tiles)[n][k].get_is_flagged() )
                 {
@@ -269,7 +269,7 @@ std::pair<int, int> Solver::get_first_adj_clickable(int i, int j)
     {
         for (int k=j-1; k <= j+1; k++)
         {
-            if ( (n >= 0) && (n < board->get_board_height()) && (k >= 0) && (k < board->get_board_width()) && !((n == i) && (k == j)) )
+            if ( board->valid_index(n, k) && !((n == i) && (k == j)) )
             {                
                 if ( !(*tiles)[n][k].get_is_open() && !(*tiles)[n][k].get_is_flagged() )
                 {

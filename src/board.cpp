@@ -179,7 +179,7 @@ void Board::init_bomb_counter(int i, int j)
     {
         for (int k=j-1; k <= j+1; k++)
         {
-            if ( (n >= 0) && (n < board_height) && (k >= 0) && (k < board_width) && !((n == i) && (k == j)) && tiles[n][k].get_is_bomb() )
+            if ( valid_index(n, k) && !((n == i) && (k == j)) && tiles[n][k].get_is_bomb() )
             {
                 bomb_counter += 1;
             }
@@ -269,4 +269,9 @@ void Board::flag_remaining()
             }
         }
     }
+}
+
+bool Board::valid_index(int i, int j)
+{
+    return (i >= 0) && (i < get_board_height()) && (j >= 0) && (j < get_board_width());
 }
