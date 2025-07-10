@@ -134,7 +134,7 @@ void Board::activate_board(int i, int j)
     {
         for (int k=j-1; k <= j+1; k++)
         {
-            if ( (n >= 0) && (n < board_height) && (k >= 0) && (k < board_width) )
+            if ( valid_index(n, k) )
             {
                 occupied_indexes.insert( (std::pair<int, int>){n, k} );
             }
@@ -194,7 +194,7 @@ void Board::open_adjacent_tiles(int i, int j)
     {
         for (int k=j-1; k <= j+1; k++)
         {
-            if ( (n >= 0) && (n < board_height) && (k >= 0) && (k < board_width) && !((n == i) && (k == j)) )
+            if ( valid_index(n, k) && !((n == i) && (k == j)) )
                 open_tile(n, k);
         }
     }
@@ -273,5 +273,5 @@ void Board::flag_remaining()
 
 bool Board::valid_index(int i, int j)
 {
-    return (i >= 0) && (i < get_board_height()) && (j >= 0) && (j < get_board_width());
+    return (i >= 0) && (i < board_height) && (j >= 0) && (j < board_width);
 }
