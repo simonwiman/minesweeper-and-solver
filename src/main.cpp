@@ -42,7 +42,14 @@ int main()
 
     bsolver.solve_iteration();
 
-    // while (true) {}
+    BeginDrawing();
+
+        ClearBackground(dark_green);
+        texture_handler.draw_board(&board);
+            
+    EndDrawing();
+
+    while (true) {}
 
     // L0000L
 

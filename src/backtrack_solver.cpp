@@ -48,68 +48,65 @@ void BacktrackSolver::solve_iteration()
     }
     std::cout << "now for the real deal" << "\n";
 
-    // backtrack(indexes);
+
+    std::set<std::pair<int, int>> visited;
+
+    backtrack(0, indexes, visited); // consider if we should have a set of visited which we keep building inbetween backtrack calls
     
 }
 
 void BacktrackSolver::backtrack(int n, const std::vector<std::pair<int, int>> &unsolved_tiles, std::set<std::pair<int, int>> &visited_tiles) // visited_tiles will be saved across usese of backtracking, for one solve
 {
-    int i;
-    int j;
-
     if ( n == unsolved_tiles.size() )
     {
         // but actually append one answer of confugurations
+        
+        int good = 0;
+        int bad = 0;
+
+        for (int u=0; u < unsolved_tiles.size(); u++)
+        {
+            if ( tile_satisfied(unsolved_tiles[u].first, unsolved_tiles[u].second) )
+                good++;
+            else
+                bad++;
+        }
+
+        std::cout << "good: " << good << "\n";
+        std::cout << "bad: "  << bad << "\n";
+
         return;
     }
 
-    i = unsolved_tiles[n].first;
-    j = unsolved_tiles[n].second;
+    int i = unsolved_tiles[n].first;
+    int j = unsolved_tiles[n].second;
     
-    std::cout << i << ", " << j << "\n";
+    // std::cout << i << ", " << j << "\n";
 
 
+    visited_tiles.insert(std::pair<int, int>(i, j));
 
-    // we should loop through all the combinations of mines of adjacent tiles, then if valid, backtrack, else do nothing
-    // if we backtrack, take the tiles into visited, and remove them from visited afterwards
+    (*board->get_tiles())[i][j].set_is_flagged(true);
 
-    std::vector<std::pair<int, int>> adjacent_tiles;
-
-    std::vector<std::vector<std::pair<int, int>>> working_indexes; // = get_working_indexes(i, j)
-    
-    for (int k=0; k < working_indexes.size(); k++) // this does not work, we have to make sure we dont touch visited and we have to flip the flag instead (could be iffy, think about this more). Everything has to be added to visited, so we need to iterate over the entire 3x3 square
+    if ( adjacent_constraints_check(i, j, visited_tiles) )
     {
-        for (int m=0; m < working_indexes[k].size(); m++)
-        {
-            int row = working_indexes[k][m].first;
-            int column = working_indexes[k][m].second;
-
-            (*board->get_tiles())[row][column].set_is_flagged(true);
-            visited_tiles.insert( std::pair<int, int>(row, column) );
-        }
-
-        backtrack(n+1, unsolved_tiles, visited_tiles);
-
-        for (int m=0; m < working_indexes[k].size(); m++)
-        {
-            int row = working_indexes[k][m].first;
-            int column = working_indexes[k][m].second;
-
-            (*board->get_tiles())[row][column].set_is_flagged(false);
-            visited_tiles.erase( std::pair<int, int>(row, column) );
-        }
+        backtrack(n + 1, unsolved_tiles, visited_tiles);
     }
 
+    (*board->get_tiles())[i][j].set_is_flagged(false);
     
-
+    if ( adjacent_constraints_check(i, j, visited_tiles) )
+    {
+        backtrack(n + 1, unsolved_tiles, visited_tiles);
+    }
     
-
+    visited_tiles.erase(std::pair<int, int>(i, j)); // ?
 
 }
 
 std::vector<std::pair<int, int>> BacktrackSolver::find_current_choices()
 {
-    std::vector<std::pair<int, int>> res;
+    std::set<std::pair<int, int>> set_of_choices;
 
     for (int i=0; i < board->get_board_height(); i++)
     {
@@ -117,16 +114,33 @@ std::vector<std::pair<int, int>> BacktrackSolver::find_current_choices()
         {
             assert( !((*board->get_tiles())[i][j].get_is_flagged() && (*board->get_tiles())[i][j].get_is_open()) );
 
-            if ( (*board->get_tiles())[i][j].get_is_open() && (*board->get_tiles())[i][j].get_adjacent_bombs() && tile_satisfied(i, j) )
+            if ( (*board->get_tiles())[i][j].get_is_open() && (*board->get_tiles())[i][j].get_adjacent_bombs() ) // !tile_satisfied(i, j), should not need
             {
-                res.push_back( std::pair<int, int>(i, j) );
+                add_adjacent_tiles(i, j, set_of_choices);
             }
         }
     }
+
+    std::vector<std::pair<int, int>> res(set_of_choices.begin(), set_of_choices.end());   
+
     return res;
 }
 
-bool BacktrackSolver::tile_satisfied(int i, int j)
+void BacktrackSolver::add_adjacent_tiles(int i, int j, std::set<std::pair<int, int>> &set_of_choices)
+{
+    for (int n=i-1; n <= i+1; n++)
+    {
+        for (int k=j-1; k <= j+1; k++)
+        {
+            if ( board->valid_index(n, k) && !((n == i) && (k == j)) && !(*board->get_tiles())[n][k].get_is_flagged() && !(*board->get_tiles())[n][k].get_is_open() ) // not in visited ? (probably don't need)
+            {
+                set_of_choices.insert(std::pair<int, int>(n, k));
+            }
+        }
+    }
+}
+
+bool BacktrackSolver::tile_satisfied(int i, int j) // remove ?
 {
     int flagged_tiles = 0;
     
@@ -146,62 +160,44 @@ bool BacktrackSolver::tile_satisfied(int i, int j)
     return false;
 }
 
-// std::vector<std::vector<IndexedBool>> BacktrackSolver::get_working_indexes(int i, int j, std::set<std::pair<int, int>> &visited)
-// {
-//     std::vector<std::vector<IndexedBool>> res;
-
-//     int flagged_tiles = 0;
-
-//     for (int n=i-1; n <= i+1; n++)
-//     {
-//         for (int k=j-1; k <= j+1; k++)
-//         {
-//             if ( board->valid_index(n, k) && !((n == i) && (k == j)) && (*board->get_tiles())[n][k].get_is_flagged() && !(*board->get_tiles())[n][k].get_is_open() )
-//             {
-//                 flagged_tiles++;
-//             }
-//         }
-//     }
-
-//     return res;
-// }
-
-// void BacktrackSolver::get_working_indexes_helper(int n, int i, int j, std::set<std::pair<int, int>> &visited, std::vector<std::vector<IndexedBool>> &res)
-// {
-//     int adjacent_bombs = (*board->get_tiles())[i][j].get_adjacent_bombs();
+bool BacktrackSolver::tile_valid(int i, int j, std::set<std::pair<int, int>> &visited_tiles)
+{
+    int flagged_tiles = 0;
+    int touchable_unflagged = 0;
+    int adjacent_bombs = (*board->get_tiles())[i][j].get_adjacent_bombs();
     
-//     const int i_direction[] = {-1, -1, -1,  0, 0,  1, 1, 1};
-//     const int j_direction[] = {-1,  0,  1, -1, 1, -1, 0, 1};
+    for (int n=i-1; n <= i+1; n++)
+    {
+        for (int k=j-1; k <= j+1; k++)
+        {
+            if ( board->valid_index(n, k) && !((n == i) && (k == j)) )
+            {
+                if ( (*board->get_tiles())[n][k].get_is_flagged() && !(*board->get_tiles())[n][k].get_is_open() )
+                    flagged_tiles++;
 
+                if ( !(*board->get_tiles())[n][k].get_is_flagged() && !(*board->get_tiles())[n][k].get_is_open() && !visited_tiles.count(std::pair<int, int>(n, k)) )
+                    touchable_unflagged++;
+            }
+        }
+    }
 
-//     if ( board->valid_index(i + i_direction[n], j + j_direction[n]) && !visited.count(std::pair<int, int>(i + i_direction[n], j + j_direction[n])) )
-//     {
-//         (*board->get_tiles())[i + i_direction[n]][j + j_direction[n]].set_is_flagged(true);
+    if ( flagged_tiles > adjacent_bombs || touchable_unflagged + flagged_tiles < adjacent_bombs )
+        return false;
+    return true;
+}
 
-//         if ( tile_valid(i, j) )
-
-//     }
-
-// }
-
-// bool BacktrackSolver::tile_valid(int i, int j)
-// {
-
-//     int flagged_tiles = 0;
-    
-//     for (int n=i-1; n <= i+1; n++)
-//     {
-//         for (int k=j-1; k <= j+1; k++)
-//         {
-//             if ( board->valid_index(n, k) && !((n == i) && (k == j)) && (*board->get_tiles())[n][k].get_is_flagged() && !(*board->get_tiles())[n][k].get_is_open() )
-//             {
-//                 flagged_tiles++;
-//             }
-//         }
-//     }
-
-//     if ( flagged_tiles > (*board->get_tiles())[i][j].get_adjacent_bombs() )
-//         return false;
-//     return true;
-
-// }
+bool BacktrackSolver::adjacent_constraints_check(int i, int j, std::set<std::pair<int, int>> &visited_tiles)
+{
+    for (int n=i-1; n <= i+1; n++)
+    {
+        for (int k=j-1; k <= j+1; k++)
+        {
+            if ( board->valid_index(n, k) && !((n == i) && (k == j)) && (*board->get_tiles())[n][k].get_is_open() && (*board->get_tiles())[n][k].get_adjacent_bombs() )
+            {
+                if ( !tile_valid(n, k, visited_tiles) )
+                    return false;
+            }
+        }
+    }
+    return true;
+}
