@@ -59,22 +59,9 @@ void BacktrackSolver::backtrack(int n, const std::vector<std::pair<int, int>> &u
 {
     if ( n == unsolved_tiles.size() )
     {
+
         // but actually append one answer of confugurations
         
-        int good = 0;
-        int bad = 0;
-
-        for (int u=0; u < unsolved_tiles.size(); u++)
-        {
-            if ( tile_satisfied(unsolved_tiles[u].first, unsolved_tiles[u].second) )
-                good++;
-            else
-                bad++;
-        }
-
-        std::cout << "good: " << good << "\n";
-        std::cout << "bad: "  << bad << "\n";
-
         return;
     }
 
@@ -157,6 +144,9 @@ bool BacktrackSolver::tile_satisfied(int i, int j) // remove ?
 
     if ( flagged_tiles == (*board->get_tiles())[i][j].get_adjacent_bombs() )
         return true;
+    
+    if ( flagged_tiles > (*board->get_tiles())[i][j].get_adjacent_bombs() )
+        std::cout << "too many flags" << "\n";
     return false;
 }
 

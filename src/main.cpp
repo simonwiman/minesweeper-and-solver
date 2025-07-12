@@ -21,7 +21,7 @@ int main()
     SetTargetFPS(60);
     
     TextureHandler texture_handler;
-    Board board(tile_size, 9, 9, 10);
+    Board board(tile_size, 16, 30, 99);
 
     board.init_board();
     texture_handler.init_textures(tile_size);
@@ -41,6 +41,7 @@ int main()
     EndDrawing();
 
     bsolver.solve_iteration();
+    std::cout << "done lol" << "\n";
 
     BeginDrawing();
 
