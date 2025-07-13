@@ -33,24 +33,23 @@ int main()
 
     bsolver.start_solve();
 
-    BeginDrawing();
+    // BeginDrawing();
 
-        ClearBackground(dark_green);
-        texture_handler.draw_board(&board);
+    //     ClearBackground(dark_green);
+    //     texture_handler.draw_board(&board);
             
-    EndDrawing();
+    // EndDrawing();
 
     bsolver.solve_iteration();
     std::cout << "done lol" << "\n";
 
-    BeginDrawing();
-
-        ClearBackground(dark_green);
-        texture_handler.draw_board(&board);
-            
-    EndDrawing();
-
-    while (true) {}
+    while (true)
+    {
+        BeginDrawing();
+            ClearBackground(dark_green);
+            texture_handler.draw_board(&board);       
+        EndDrawing();
+    }
 
     // L0000L
 

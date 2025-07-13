@@ -48,46 +48,48 @@ void BacktrackSolver::solve_iteration()
     }
     std::cout << "now for the real deal" << "\n";
 
-
     std::set<std::pair<int, int>> visited;
+    std::vector<std::vector<std::vector<bool>>> res;
 
-    backtrack(0, indexes, visited); // consider if we should have a set of visited which we keep building inbetween backtrack calls
+    backtrack(0, indexes, visited, res);
     
+    
+
+    std::cout << "size of the vector of templates: " << res.size() << "\n";
+
 }
 
-void BacktrackSolver::backtrack(int n, const std::vector<std::pair<int, int>> &unsolved_tiles, std::set<std::pair<int, int>> &visited_tiles) // visited_tiles will be saved across usese of backtracking, for one solve
+void BacktrackSolver::backtrack(int n, const std::vector<std::pair<int, int>> &unsolved_tiles, std::set<std::pair<int, int>> &visited_tiles, std::vector<std::vector<std::vector<bool>>> &res)
 {
     if ( n == unsolved_tiles.size() )
     {
+        std::vector<std::vector<bool>> flag_template = make_flag_template();
+        res.push_back(flag_template);
 
-        // but actually append one answer of confugurations
-        
         return;
     }
 
     int i = unsolved_tiles[n].first;
     int j = unsolved_tiles[n].second;
     
-    // std::cout << i << ", " << j << "\n";
-
-
     visited_tiles.insert(std::pair<int, int>(i, j));
+
 
     (*board->get_tiles())[i][j].set_is_flagged(true);
 
     if ( adjacent_constraints_check(i, j, visited_tiles) )
     {
-        backtrack(n + 1, unsolved_tiles, visited_tiles);
+        backtrack(n + 1, unsolved_tiles, visited_tiles, res);
     }
 
     (*board->get_tiles())[i][j].set_is_flagged(false);
     
     if ( adjacent_constraints_check(i, j, visited_tiles) )
     {
-        backtrack(n + 1, unsolved_tiles, visited_tiles);
+        backtrack(n + 1, unsolved_tiles, visited_tiles, res);
     }
     
-    visited_tiles.erase(std::pair<int, int>(i, j)); // ?
+    visited_tiles.erase(std::pair<int, int>(i, j));
 
 }
 
@@ -101,7 +103,7 @@ std::vector<std::pair<int, int>> BacktrackSolver::find_current_choices()
         {
             assert( !((*board->get_tiles())[i][j].get_is_flagged() && (*board->get_tiles())[i][j].get_is_open()) );
 
-            if ( (*board->get_tiles())[i][j].get_is_open() && (*board->get_tiles())[i][j].get_adjacent_bombs() ) // !tile_satisfied(i, j), should not need
+            if ( (*board->get_tiles())[i][j].get_is_open() && (*board->get_tiles())[i][j].get_adjacent_bombs() )
             {
                 add_adjacent_tiles(i, j, set_of_choices);
             }
@@ -119,7 +121,7 @@ void BacktrackSolver::add_adjacent_tiles(int i, int j, std::set<std::pair<int, i
     {
         for (int k=j-1; k <= j+1; k++)
         {
-            if ( board->valid_index(n, k) && !((n == i) && (k == j)) && !(*board->get_tiles())[n][k].get_is_flagged() && !(*board->get_tiles())[n][k].get_is_open() ) // not in visited ? (probably don't need)
+            if ( board->valid_index(n, k) && !((n == i) && (k == j)) && !(*board->get_tiles())[n][k].get_is_flagged() && !(*board->get_tiles())[n][k].get_is_open() )
             {
                 set_of_choices.insert(std::pair<int, int>(n, k));
             }
@@ -127,7 +129,7 @@ void BacktrackSolver::add_adjacent_tiles(int i, int j, std::set<std::pair<int, i
     }
 }
 
-bool BacktrackSolver::tile_satisfied(int i, int j) // remove ?
+bool BacktrackSolver::tile_satisfied(int i, int j) // remove ?, can be good for testing (if you are not an idiot)
 {
     int flagged_tiles = 0;
     
@@ -190,4 +192,27 @@ bool BacktrackSolver::adjacent_constraints_check(int i, int j, std::set<std::pai
         }
     }
     return true;
+}
+
+std::vector<std::vector<bool>> BacktrackSolver::make_flag_template()
+{
+    std::vector<std::vector<bool>> res(board->get_board_height());
+    std::vector<std::vector<Tile>> tiles = *board->get_tiles();
+
+    for (int i=0; i < board->get_board_height(); i++)
+    {
+        std::vector<bool> row(board->get_board_width());
+
+        for (int j=0; j < board->get_board_width(); j++)
+        {
+            if ( tiles[i][j].get_is_flagged() )
+                row.push_back(true);
+            else
+                row.push_back(false);
+        }
+
+        res.push_back(row);
+    }
+
+    return res;
 }

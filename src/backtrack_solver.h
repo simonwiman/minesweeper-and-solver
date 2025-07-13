@@ -14,11 +14,12 @@ public:
 private:
     Board* board;
 
-    void backtrack(int n, const std::vector<std::pair<int, int>> &unsolved_tiles, std::set<std::pair<int, int>> &visited_tiles);
+    void backtrack(int n, const std::vector<std::pair<int, int>> &unsolved_tiles, std::set<std::pair<int, int>> &visited_tiles, std::vector<std::vector<std::vector<bool>>> &res);
     std::vector<std::pair<int, int>> find_current_choices();
     void add_adjacent_tiles(int i, int j, std::set<std::pair<int, int>> &set_of_choices);
     bool tile_satisfied(int i, int j);
     bool tile_valid(int i, int j, std::set<std::pair<int, int>> &visited_tiles);
     bool adjacent_constraints_check(int i, int j, std::set<std::pair<int, int>> &visited_tiles);
+    std::vector<std::vector<bool>> make_flag_template();
 
 };
