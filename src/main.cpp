@@ -41,7 +41,6 @@ int main()
     // EndDrawing();
 
     bsolver.solve_iteration();
-    std::cout << "done lol" << "\n";
 
     while (true)
     {

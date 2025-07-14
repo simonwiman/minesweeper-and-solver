@@ -41,21 +41,30 @@ void BacktrackSolver::solve_iteration()
 
     std::vector<std::pair<int, int>> indexes = find_current_choices();
     
-
-    for (int i=0; i < indexes.size(); i++)
-    {
-        std::cout << indexes[i].first << ", " << indexes[i].second << "\n";
-    }
-    std::cout << "now for the real deal" << "\n";
-
     std::set<std::pair<int, int>> visited;
-    std::vector<std::vector<std::vector<bool>>> res;
+    std::vector<std::vector<std::vector<bool>>> flag_templates;
 
-    backtrack(0, indexes, visited, res);
-    
-    
+    backtrack(0, indexes, visited, flag_templates);
 
-    std::cout << "size of the vector of templates: " << res.size() << "\n";
+    for (int i=0; i < board->get_board_height(); i++)
+    {
+        for (int j=0; j < board->get_board_width(); j++)
+        {
+            int counter = 0;
+
+            for (int z=0; z < flag_templates.size(); z++)
+            {
+                if ( flag_templates[z][i][j] )
+                    counter++;
+            }
+            
+            if ( counter == flag_templates.size() ) // flagged in all templates
+                (*board->get_tiles())[i][j].set_is_flagged(true);
+            
+            // else if ( counter == 0 )
+            //     // board->open_tile(i, j); // can't do this unless we get info of if something isn't a bomb ever                
+        }
+    }
 
 }
 
@@ -196,12 +205,12 @@ bool BacktrackSolver::adjacent_constraints_check(int i, int j, std::set<std::pai
 
 std::vector<std::vector<bool>> BacktrackSolver::make_flag_template()
 {
-    std::vector<std::vector<bool>> res(board->get_board_height());
+    std::vector<std::vector<bool>> res; // (board->get_board_height())
     std::vector<std::vector<Tile>> tiles = *board->get_tiles();
 
     for (int i=0; i < board->get_board_height(); i++)
     {
-        std::vector<bool> row(board->get_board_width());
+        std::vector<bool> row; // (board->get_board_width())
 
         for (int j=0; j < board->get_board_width(); j++)
         {
