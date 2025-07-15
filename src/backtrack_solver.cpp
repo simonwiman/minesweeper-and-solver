@@ -6,12 +6,6 @@
 
 #include <iostream> // debug
 
-typedef struct
-{
-    int x;
-    int y;
-    bool flag;
-} IndexedBool;
 
 BacktrackSolver::BacktrackSolver(Board* minesweeper_board) : board(minesweeper_board) {}
 
@@ -38,42 +32,50 @@ void BacktrackSolver::start_solve()
 
 void BacktrackSolver::solve_iteration()
 {
-
     std::vector<std::pair<int, int>> indexes = find_current_choices();
     
     std::set<std::pair<int, int>> visited;
-    std::vector<std::vector<std::vector<bool>>> flag_templates;
+    std::vector<std::vector<bool>> flag_layouts;
 
-    backtrack(0, indexes, visited, flag_templates);
+    backtrack(0, indexes, visited, flag_layouts);
 
-    for (int i=0; i < board->get_board_height(); i++)
+    for (std::size_t k=0; k < flag_layouts.size() - 1; k++)
     {
-        for (int j=0; j < board->get_board_width(); j++)
-        {
-            int counter = 0;
-
-            for (int z=0; z < flag_templates.size(); z++)
-            {
-                if ( flag_templates[z][i][j] )
-                    counter++;
-            }
-            
-            if ( counter == flag_templates.size() ) // flagged in all templates
-                (*board->get_tiles())[i][j].set_is_flagged(true);
-            
-            // else if ( counter == 0 )
-            //     // board->open_tile(i, j); // can't do this unless we get info of if something isn't a bomb ever                
-        }
+        assert(flag_layouts[k].size() == flag_layouts[k+1].size());
     }
 
+    for (std::size_t n=0; n < indexes.size(); n++)
+    {   
+        std::size_t counter = 0;
+
+        for (std::size_t k=0; k < flag_layouts.size(); k++)
+        {
+            if ( flag_layouts[k][n] )
+                counter++;
+        }
+
+        if ( counter == flag_layouts.size() ) // flagged in all layouts
+        {
+            int i = indexes[n].first;
+            int j = indexes[n].second;
+            (*board->get_tiles())[i][j].set_is_flagged(true);
+        }
+
+        else if ( counter == 0 ) // unflagged in all layouts
+        {
+            int i = indexes[n].first;
+            int j = indexes[n].second;
+            board->open_tile(i, j);
+        }
+    }
 }
 
-void BacktrackSolver::backtrack(int n, const std::vector<std::pair<int, int>> &unsolved_tiles, std::set<std::pair<int, int>> &visited_tiles, std::vector<std::vector<std::vector<bool>>> &res)
+void BacktrackSolver::backtrack(std::size_t n, const std::vector<std::pair<int, int>> &unsolved_tiles, std::set<std::pair<int, int>> &visited_tiles, std::vector<std::vector<bool>> &res)
 {
     if ( n == unsolved_tiles.size() )
     {
-        std::vector<std::vector<bool>> flag_template = make_flag_template();
-        res.push_back(flag_template);
+        std::vector<bool> flag_layout = map_flags(unsolved_tiles);
+        res.push_back(flag_layout);
 
         return;
     }
@@ -203,24 +205,19 @@ bool BacktrackSolver::adjacent_constraints_check(int i, int j, std::set<std::pai
     return true;
 }
 
-std::vector<std::vector<bool>> BacktrackSolver::make_flag_template()
+std::vector<bool> BacktrackSolver::map_flags(const std::vector<std::pair<int, int>> &tiles)
 {
-    std::vector<std::vector<bool>> res; // (board->get_board_height())
-    std::vector<std::vector<Tile>> tiles = *board->get_tiles();
+    std::vector<bool> res;
 
-    for (int i=0; i < board->get_board_height(); i++)
+    for (auto index: tiles)
     {
-        std::vector<bool> row; // (board->get_board_width())
-
-        for (int j=0; j < board->get_board_width(); j++)
-        {
-            if ( tiles[i][j].get_is_flagged() )
-                row.push_back(true);
-            else
-                row.push_back(false);
-        }
-
-        res.push_back(row);
+        int i = index.first;
+        int j = index.second;
+        
+        if ( (*board->get_tiles())[i][j].get_is_flagged() )
+            res.push_back(true);
+        else
+            res.push_back(false);
     }
 
     return res;
