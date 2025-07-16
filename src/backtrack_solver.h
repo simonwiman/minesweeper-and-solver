@@ -22,5 +22,6 @@ private:
     bool tile_valid(int i, int j, std::set<std::pair<int, int>> &visited_tiles);
     bool adjacent_constraints_check(int i, int j, std::set<std::pair<int, int>> &visited_tiles);
     std::vector<bool> map_flags(const std::vector<std::pair<int, int>> &tiles);
+    bool backtrack_iteration();
 
 };

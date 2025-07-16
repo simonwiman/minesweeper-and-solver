@@ -32,6 +32,14 @@ void BacktrackSolver::start_solve()
 
 void BacktrackSolver::solve_iteration()
 {
+
+    backtrack_iteration();
+
+}
+
+bool BacktrackSolver::backtrack_iteration()
+{
+
     std::vector<std::pair<int, int>> indexes = find_current_choices();
     
     std::set<std::pair<int, int>> visited;
@@ -43,6 +51,8 @@ void BacktrackSolver::solve_iteration()
     {
         assert(flag_layouts[k].size() == flag_layouts[k+1].size());
     }
+
+    bool progression_made = false;
 
     for (std::size_t n=0; n < indexes.size(); n++)
     {   
@@ -59,6 +69,7 @@ void BacktrackSolver::solve_iteration()
             int i = indexes[n].first;
             int j = indexes[n].second;
             (*board->get_tiles())[i][j].set_is_flagged(true);
+            progression_made = true;
         }
 
         else if ( counter == 0 ) // unflagged in all layouts
@@ -66,8 +77,11 @@ void BacktrackSolver::solve_iteration()
             int i = indexes[n].first;
             int j = indexes[n].second;
             board->open_tile(i, j);
+            progression_made = true;
         }
     }
+
+    return progression_made;
 }
 
 void BacktrackSolver::backtrack(std::size_t n, const std::vector<std::pair<int, int>> &unsolved_tiles, std::set<std::pair<int, int>> &visited_tiles, std::vector<std::vector<bool>> &res)

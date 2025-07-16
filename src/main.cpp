@@ -33,17 +33,14 @@ int main()
 
     bsolver.start_solve();
 
-    // BeginDrawing();
+    // bsolver.solve_iteration();
 
-    //     ClearBackground(dark_green);
-    //     texture_handler.draw_board(&board);
-            
-    // EndDrawing();
-
-    bsolver.solve_iteration();
-
-    while (true)
+    while (!WindowShouldClose())
     {
+
+        if ( IsKeyReleased(KEY_F) )
+            bsolver.solve_iteration();
+
         BeginDrawing();
             ClearBackground(dark_green);
             texture_handler.draw_board(&board);       
