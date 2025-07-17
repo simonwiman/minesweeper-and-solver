@@ -10,6 +10,7 @@ public:
     void solve();
     void start_solve();
     void solve_iteration();
+    bool simple_rules();
 
 private:
     Board* board;

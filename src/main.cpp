@@ -33,8 +33,6 @@ int main()
 
     bsolver.start_solve();
 
-    // bsolver.solve_iteration();
-
     while (!WindowShouldClose())
     {
 
@@ -52,7 +50,7 @@ int main()
 
     // Solver solver(&board);
 
-    // solver.start_solve();
+    
 
     // // L0L
     // int completed = 0;

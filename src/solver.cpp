@@ -31,6 +31,12 @@ void Solver::start_solve()
 
 void Solver::solve_iteration()
 {
+    if ( !simple_rules() )
+        educated_guess_click();
+}
+
+bool Solver::simple_rules()
+{
     bool flag_progress = false;
     bool click_progress = false;
 
@@ -54,7 +60,9 @@ void Solver::solve_iteration()
     }
 
     if ( !flag_progress && !click_progress )
-        educated_guess_click();
+        return false;
+
+    return true;
 }
 
 bool Solver::simple_rule_flag(int i, int j)
