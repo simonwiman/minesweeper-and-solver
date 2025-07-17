@@ -1,6 +1,7 @@
 #pragma once
 
 #include "board.h"
+#include "solver.h"
 #include <set>
 
 
@@ -14,6 +15,7 @@ public:
     
 private:
     Board* board;
+    Solver simple_solver;
 
     void backtrack(std::size_t n, const std::vector<std::pair<int, int>> &unsolved_tiles, std::set<std::pair<int, int>> &visited_tiles, std::vector<std::vector<bool>> &res);
     std::vector<std::pair<int, int>> find_current_choices();

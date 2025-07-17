@@ -29,21 +29,21 @@ int main()
 
     // L0000L
 
-    BacktrackSolver bsolver(&board);
+    // BacktrackSolver bsolver(&board);
 
-    bsolver.start_solve();
+    // bsolver.start_solve();
 
-    while (!WindowShouldClose())
-    {
+    // while (!WindowShouldClose())
+    // {
 
-        if ( IsKeyReleased(KEY_F) )
-            bsolver.solve_iteration();
+    //     if ( IsKeyReleased(KEY_F) )
+    //         bsolver.solve_iteration();
 
-        BeginDrawing();
-            ClearBackground(dark_green);
-            texture_handler.draw_board(&board);       
-        EndDrawing();
-    }
+    //     BeginDrawing();
+    //         ClearBackground(dark_green);
+    //         texture_handler.draw_board(&board);       
+    //     EndDrawing();
+    // }
 
     // L0000L
 
@@ -53,31 +53,31 @@ int main()
     
 
     // // L0L
-    // int completed = 0;
+    int completed = 0;
     
-    // for (int i=0; i < 100; i++)
-    // {
-    //     Board board(tile_size, 16, 30, 99);
-    //     board.init_board();
+    for (int i=0; i < 20; i++)
+    {
+        Board board(tile_size, 16, 30, 99);
+        board.init_board();
 
-    //     Solver solver(&board);
+        BacktrackSolver bsolver(&board);
 
-    //     solver.solve();
+        bsolver.solve();
         
-    //     if ( board.get_board_state() == COMPLETE )
-    //     {
-    //         completed++;
-    //     }
+        if ( board.get_board_state() == COMPLETE )
+        {
+            completed++;
+        }
 
-    //     BeginDrawing();
+        BeginDrawing();
 
-    //         ClearBackground(dark_green);
-    //         texture_handler.draw_board(&board);
+            ClearBackground(dark_green);
+            texture_handler.draw_board(&board);
                 
-    //     EndDrawing();
-    // }
+        EndDrawing();
+    }
 
-    // std::cout << "Completed boards: " << completed << "\n";
+    std::cout << "Completed boards: " << completed << "\n";
     // L0L
 
 

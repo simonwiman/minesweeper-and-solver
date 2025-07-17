@@ -7,7 +7,7 @@
 #include <iostream> // debug
 
 
-BacktrackSolver::BacktrackSolver(Board* minesweeper_board) : board(minesweeper_board) {}
+BacktrackSolver::BacktrackSolver(Board* minesweeper_board) : board(minesweeper_board), simple_solver(Solver(minesweeper_board)) {}
 
 void BacktrackSolver::solve()
 {
@@ -27,19 +27,22 @@ void BacktrackSolver::solve()
 
 void BacktrackSolver::start_solve()
 {
-    board->activate_board(board->get_board_height()/2, board->get_board_width()/2);
+    simple_solver.start_solve();
 }
 
 void BacktrackSolver::solve_iteration()
 {
+    if ( simple_solver.simple_rules() )
+        return;
+       
+    if ( backtrack_iteration() )
+        return;
 
-    backtrack_iteration();
-
+    simple_solver.educated_guess_click();
 }
 
 bool BacktrackSolver::backtrack_iteration()
 {
-
     std::vector<std::pair<int, int>> indexes = find_current_choices();
     
     std::set<std::pair<int, int>> visited;
