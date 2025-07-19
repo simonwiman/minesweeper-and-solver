@@ -50,7 +50,7 @@ void Board::set_board_state(BoardState board_state)
     this->board_state = board_state;
 }
 
-void Board::init_board()
+void Board::init_board(float board_loc_x, float board_loc_y)
 {
     for (int i=0; i < board_height; i++)
     {
@@ -58,7 +58,7 @@ void Board::init_board()
 
         for (int j=0; j < board_width; j++)
         {
-            current_row.push_back((Tile){(Rectangle){(float)j*tile_size, (float)i*tile_size, (float)tile_size, (float)tile_size}, false, false, false, false, 0});
+            current_row.push_back((Tile){(Rectangle){(float)j*tile_size + board_loc_x, (float)i*tile_size + board_loc_y, (float)tile_size, (float)tile_size}, false, false, false, false, 0});
         }
 
         tiles.push_back(current_row);

@@ -9,7 +9,7 @@ class Board
 {
 public:
     Board(int size, int height, int width, int nr_of_bombs);
-    void init_board();
+    void init_board(float board_loc_x, float board_loc_y);
     void update_board();
     const int get_tile_size();
     const int get_board_height();
