@@ -7,6 +7,7 @@
 #include "backtrack_solver.h"
 #include <iostream> // for debug
 #include <cassert>
+#include <memory>
 
 
 int main()
@@ -24,18 +25,21 @@ int main()
     SetTargetFPS(60);
     
     TextureHandler texture_handler;
-    Board board(tile_size, board_height, board_width, bombs);
 
-    board.init_board(screen_width/2 - tile_size*board_width/2, screen_height/2 - board_height*tile_size/2);
+
+    // Board board(tile_size, board_height, board_width, bombs);
+
+    std::shared_ptr<Board> board = std::make_shared<Board>(tile_size, board_height, board_width, bombs);
+
+
+    board->init_board(screen_width/2 - tile_size*board_width/2, screen_height/2 - board_height*tile_size/2);
     texture_handler.init_textures(tile_size);
 
 
     // L0000L
 
-    BacktrackSolver bsolver(&board);
-
+    BacktrackSolver bsolver(board);
     bsolver.start_solve();
-
 
     double time_to_start = GetTime();
 
@@ -45,21 +49,21 @@ int main()
         // if ( IsKeyReleased(KEY_F) )
         //     bsolver.solve_iteration();
 
-        if ( board.game_complete() )
+        if ( board->game_complete() )
         {
-            board.flag_remaining();
-            board.set_board_state(COMPLETE);
+            board->flag_remaining();
+            board->set_board_state(COMPLETE);
             std::cout << "time: " << GetTime() - time_to_start << "\n";
             break;
         }
 
-        if ( board.get_board_state() != DEAD )
+        if ( board->get_board_state() != DEAD )
             bsolver.solve_iteration();
 
 
         BeginDrawing();
             ClearBackground(dark_green);
-            texture_handler.draw_board(&board);       
+            texture_handler.draw_board(board);
         EndDrawing();
     }
 

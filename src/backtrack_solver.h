@@ -3,19 +3,20 @@
 #include "board.h"
 #include "solver.h"
 #include <set>
+#include <memory>
 
 
 class BacktrackSolver
 {
 public:
-    BacktrackSolver(Board* minesweeper_board);
+    BacktrackSolver(std::shared_ptr<Board> minesweeper_board);
     void solve();
     void solve_iteration();
     void start_solve();
-    void set_board(Board* minesweeper_board);
+    void set_board(std::shared_ptr<Board> minesweeper_board);
     
 private:
-    Board* board;
+    std::shared_ptr<Board> board;
     Solver simple_solver;
 
     void backtrack(std::size_t n, const std::vector<std::pair<int, int>> &unsolved_tiles, std::set<std::pair<int, int>> &visited_tiles, std::vector<std::vector<bool>> &res);

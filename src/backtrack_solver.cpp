@@ -7,7 +7,7 @@
 #include <iostream> // debug
 
 
-BacktrackSolver::BacktrackSolver(Board* minesweeper_board) : board(minesweeper_board), simple_solver(Solver(minesweeper_board)) {}
+BacktrackSolver::BacktrackSolver(std::shared_ptr<Board> minesweeper_board) : board(minesweeper_board), simple_solver(Solver(minesweeper_board)) {}
 
 void BacktrackSolver::solve()
 {
@@ -240,7 +240,8 @@ std::vector<bool> BacktrackSolver::map_flags(const std::vector<std::pair<int, in
     return res;
 }
 
-void BacktrackSolver::set_board(Board* minesweeper_board)
+void BacktrackSolver::set_board(std::shared_ptr<Board> minesweeper_board)
 {
+    simple_solver.set_board(minesweeper_board);
     board = minesweeper_board;
 }

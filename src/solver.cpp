@@ -6,7 +6,7 @@
 #include <iostream> // for debug
 
 
-Solver::Solver(Board* minesweeper_board) : board(minesweeper_board) {}
+Solver::Solver(std::shared_ptr<Board> minesweeper_board) : board(minesweeper_board) {}
 
 void Solver::solve()
 {
@@ -287,4 +287,9 @@ std::pair<int, int> Solver::get_first_adj_clickable(int i, int j)
         }
     }
     throw "no clickable tiles"; // L0L
+}
+
+void Solver::set_board(std::shared_ptr<Board> minesweeper_board)
+{
+    board = minesweeper_board;
 }

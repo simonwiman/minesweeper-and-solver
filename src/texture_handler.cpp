@@ -35,7 +35,7 @@ void TextureHandler::init_textures(int tile_size)
     assert((texture_tile_8.width == tile_size) && (texture_tile_8.height == tile_size));
 }
 
-void TextureHandler::draw_board(Board* board)
+void TextureHandler::draw_board(std::shared_ptr<Board> board)
 {
 
     std::vector<std::vector<Tile>> *tiles = board->get_tiles();

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <raylib.h>
+#include <memory>
 #include "board.h"
 
 
@@ -8,7 +9,7 @@ class TextureHandler {
 
 public:
     void init_textures(int tile_size);
-    void draw_board(Board* board);
+    void draw_board(std::shared_ptr<Board> board);
     void unload_all_textures();
 
 private:
