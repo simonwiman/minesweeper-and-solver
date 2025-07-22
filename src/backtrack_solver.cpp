@@ -239,3 +239,8 @@ std::vector<bool> BacktrackSolver::map_flags(const std::vector<std::pair<int, in
 
     return res;
 }
+
+void BacktrackSolver::set_board(Board* minesweeper_board)
+{
+    board = minesweeper_board;
+}

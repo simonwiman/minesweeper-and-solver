@@ -12,6 +12,7 @@ public:
     void solve();
     void solve_iteration();
     void start_solve();
+    void set_board(Board* minesweeper_board);
     
 private:
     Board* board;
