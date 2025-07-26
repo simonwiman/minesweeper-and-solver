@@ -4,6 +4,7 @@
 #include <memory>
 #include "backtrack_solver.h"
 #include "board.h"
+#include "texture_handler.h"
 
 #include <iostream>
 
@@ -11,7 +12,7 @@
 class GameHandler
 {
 public:
-    GameHandler(int tile_size);
+    GameHandler(int tile_size, int screen_width, int screen_height);
     void update();
     void reset_board();
     void draw();
@@ -23,11 +24,14 @@ public:
 
 private:
     int tile_size;
+    const int screen_width;
+    const int screen_height;
     double time_spent;
     int board_width;
     int board_height;
     int bombs;
     std::shared_ptr<Board> board;
     BacktrackSolver solver;
+    TextureHandler texture_handler;
     
 };

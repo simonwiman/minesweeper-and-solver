@@ -24,16 +24,9 @@ int main()
     InitWindow(screen_width, screen_height, "Minesweeper");
     SetTargetFPS(60);
     
-    TextureHandler texture_handler;
-
-
-    // Board board(tile_size, board_height, board_width, bombs);
-
+    TextureHandler texture_handler(tile_size);
     std::shared_ptr<Board> board = std::make_shared<Board>(tile_size, board_height, board_width, bombs);
-
-
     board->init_board(screen_width/2 - tile_size*board_width/2, screen_height/2 - board_height*tile_size/2);
-    texture_handler.init_textures(tile_size);
 
 
     // L0000L
@@ -125,9 +118,6 @@ int main()
     //     // std::cout << COMPLETE << "\n";
 
     // }
-
-    // Cleanup
-    texture_handler.unload_all_textures();
     
     CloseWindow();
 }

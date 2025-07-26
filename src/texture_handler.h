@@ -8,9 +8,9 @@
 class TextureHandler {
 
 public:
-    void init_textures(int tile_size);
+    TextureHandler(int tile_size);
     void draw_board(std::shared_ptr<Board> board);
-    void unload_all_textures();
+    ~TextureHandler();
 
 private:
     Texture2D texture_tile_hidden;
@@ -26,5 +26,7 @@ private:
     Texture2D texture_tile_6;
     Texture2D texture_tile_7;
     Texture2D texture_tile_8;
+
+    void unload_all_textures();
 
 };
