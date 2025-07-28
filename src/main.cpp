@@ -31,34 +31,34 @@ int main()
 
     // L0000L
 
-    BacktrackSolver bsolver(board);
-    bsolver.start_solve();
+    // BacktrackSolver bsolver(board);
+    // bsolver.start_solve();
 
-    double time_to_start = GetTime();
+    // double time_to_start = GetTime();
 
-    while (!WindowShouldClose())
-    {
+    // while (!WindowShouldClose())
+    // {
 
-        // if ( IsKeyReleased(KEY_F) )
-        //     bsolver.solve_iteration();
+    //     // if ( IsKeyReleased(KEY_F) )
+    //     //     bsolver.solve_iteration();
 
-        if ( board->game_complete() )
-        {
-            board->flag_remaining();
-            board->set_board_state(COMPLETE);
-            std::cout << "time: " << GetTime() - time_to_start << "\n";
-            break;
-        }
+    //     if ( board->game_complete() )
+    //     {
+    //         board->flag_remaining();
+    //         board->set_board_state(COMPLETE);
+    //         std::cout << "time: " << GetTime() - time_to_start << "\n";
+    //         break;
+    //     }
 
-        if ( board->get_board_state() != DEAD )
-            bsolver.solve_iteration();
+    //     if ( board->get_board_state() != DEAD )
+    //         bsolver.solve_iteration();
 
 
-        BeginDrawing();
-            ClearBackground(dark_green);
-            texture_handler.draw_board(board);
-        EndDrawing();
-    }
+    //     BeginDrawing();
+    //         ClearBackground(dark_green);
+    //         texture_handler.draw_board(board);
+    //     EndDrawing();
+    // }
 
     // L0000L
 
@@ -94,30 +94,46 @@ int main()
     // L0L
 
 
-    // while (!WindowShouldClose())
-    // {
-    //     board.update_board();
+    while (!WindowShouldClose())
+    {
+        board->update_board();
         
-    //     // if ( board.game_complete() )
-    //     // {
-    //     //     board.flag_remaining();
-    //     //     board.set_board_state(COMPLETE);
-    //     // }
+        // if ( board.game_complete() )
+        // {
+        //     board.flag_remaining();
+        //     board.set_board_state(COMPLETE);
+        // }
 
-    //     // if ( board.get_board_state() != DEAD )
-    //     //     solver.solve_iteration();
+        // if ( board.get_board_state() != DEAD )
+        //     solver.solve_iteration();
 
-    //     BeginDrawing();
+        BeginDrawing();
 
-    //         ClearBackground(dark_green);
-    //         texture_handler.draw_board(&board);
+            ClearBackground(dark_green);
+            texture_handler.draw_board(board);
                     
-    //     EndDrawing();
+        EndDrawing();
 
         
-    //     // std::cout << COMPLETE << "\n";
+        // std::cout << COMPLETE << "\n";
 
-    // }
+    }
     
     CloseWindow();
 }
+
+
+
+/*
+1. Add buttons
+
+2. Finish the GameHandler
+
+3. changed from vectors to arrays where applicable
+
+4. change graphics and add graphics to buttons
+
+*/
+
+
+

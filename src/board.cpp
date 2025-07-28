@@ -58,7 +58,12 @@ void Board::init_board(float board_loc_x, float board_loc_y)
 
         for (int j=0; j < board_width; j++)
         {
-            current_row.push_back((Tile){(Rectangle){(float)j*tile_size + board_loc_x, (float)i*tile_size + board_loc_y, (float)tile_size, (float)tile_size}, false, false, false, false, 0});
+            const bool is_open = false;
+            const bool is_bomb = false;
+            const bool is_flagged = false;
+            const bool is_hovered = false;
+            const int adjacent_bombs = 0;
+            current_row.push_back((Tile){(Rectangle){(float)j*tile_size + board_loc_x, (float)i*tile_size + board_loc_y, (float)tile_size, (float)tile_size}, is_open, is_bomb, is_flagged, is_hovered, adjacent_bombs});
         }
 
         tiles.push_back(current_row);
