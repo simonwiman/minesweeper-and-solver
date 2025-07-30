@@ -65,6 +65,11 @@ void GameHandler::reset_board()
 {
     std::shared_ptr<Board> new_board = std::make_shared<Board>(tile_size, board_height, board_width, bombs);
     board = new_board;
+
+    const int first_tile_x_position = screen_width/2 - tile_size*board_width/2;
+    const int first_tile_y_position = screen_height/2 - board_height*tile_size/2;
+    
+    board->init_board(first_tile_x_position, first_tile_y_position);
     solver.set_board(new_board);
 }
 
