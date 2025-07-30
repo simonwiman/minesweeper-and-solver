@@ -2,9 +2,11 @@
 
 #include <cassert>
 #include <memory>
+#include <array>
 #include "backtrack_solver.h"
 #include "board.h"
 #include "texture_handler.h"
+#include "button.h"
 
 #include <iostream>
 
@@ -16,6 +18,7 @@ public:
     void update();
     void reset_board();
     void draw();
+    void solve();
 
     void set_board_width(int width_size);
     void set_board_height(int height_size);
@@ -33,5 +36,6 @@ private:
     std::shared_ptr<Board> board;
     BacktrackSolver solver;
     TextureHandler texture_handler;
+    std::array<Button, 6> buttons;
     
 };

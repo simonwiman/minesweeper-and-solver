@@ -3,6 +3,7 @@
 #include <raylib.h>
 #include <memory>
 #include "board.h"
+#include "button.h"
 
 
 class TextureHandler {
@@ -10,6 +11,7 @@ class TextureHandler {
 public:
     TextureHandler(int tile_size);
     void draw_board(std::shared_ptr<Board> board);
+    void draw_button(Button* button);
     ~TextureHandler();
 
 private:

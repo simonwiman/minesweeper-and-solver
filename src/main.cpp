@@ -5,6 +5,7 @@
 #include "texture_handler.h"
 #include "solver.h"
 #include "backtrack_solver.h"
+#include "game_handler.h"
 #include <iostream> // for debug
 #include <cassert>
 #include <memory>
@@ -27,6 +28,20 @@ int main()
     TextureHandler texture_handler(tile_size);
     std::shared_ptr<Board> board = std::make_shared<Board>(tile_size, board_height, board_width, bombs);
     board->init_board(screen_width/2 - tile_size*board_width/2, screen_height/2 - board_height*tile_size/2);
+
+
+    // 0000000000000000
+
+    GameHandler game_handler(tile_size, screen_width, screen_height);
+
+    while (!WindowShouldClose())
+    {
+        game_handler.update();
+        game_handler.draw();
+    }
+
+    // 0000000000000000
+
 
 
     // L0000L
@@ -62,62 +77,6 @@ int main()
 
     // L0000L
 
-
-
-
-    // // L0L
-    // int completed = 0;
-    
-    // for (int i=0; i < 20; i++)
-    // {
-    //     Board board(tile_size, 16, 30, 99);
-    //     board.init_board();
-
-    //     BacktrackSolver bsolver(&board);
-
-    //     bsolver.solve();
-        
-    //     if ( board.get_board_state() == COMPLETE )
-    //     {
-    //         completed++;
-    //     }
-
-    //     BeginDrawing();
-
-    //         ClearBackground(dark_green);
-    //         texture_handler.draw_board(&board);
-                
-    //     EndDrawing();
-    // }
-
-    // std::cout << "Completed boards: " << completed << "\n";
-    // L0L
-
-
-    while (!WindowShouldClose())
-    {
-        board->update_board();
-        
-        // if ( board.game_complete() )
-        // {
-        //     board.flag_remaining();
-        //     board.set_board_state(COMPLETE);
-        // }
-
-        // if ( board.get_board_state() != DEAD )
-        //     solver.solve_iteration();
-
-        BeginDrawing();
-
-            ClearBackground(dark_green);
-            texture_handler.draw_board(board);
-                    
-        EndDrawing();
-
-        
-        // std::cout << COMPLETE << "\n";
-
-    }
     
     CloseWindow();
 }
@@ -132,8 +91,4 @@ int main()
 3. changed from vectors to arrays where applicable
 
 4. change graphics and add graphics to buttons
-
 */
-
-
-

@@ -105,6 +105,19 @@ void TextureHandler::draw_board(std::shared_ptr<Board> board)
     }
 }
 
+void TextureHandler::draw_button(Button* button)
+{
+    Rectangle rect = button->get_rect();
+    Texture2D texture;
+
+    if ( button->get_is_hovered() )
+        texture = button->get_texture_hovered();
+    else
+        texture = button->get_texture_normal();
+
+    DrawTextureV(texture, (Vector2){rect.x, rect.y}, WHITE);
+}
+
 void TextureHandler::unload_all_textures()
 {
     UnloadTexture(texture_tile_hidden);
