@@ -11,8 +11,18 @@ GameHandler::GameHandler(int tile_size, int screen_width, int screen_height) : t
 
     board->init_board(first_tile_x_position, first_tile_y_position);
 
-    Texture2D texture_normal = LoadTexture("assets/textures/button_normal.png");
-    Texture2D texture_hovered = LoadTexture("assets/textures/button_hovered.png");
+    Texture2D texture_normal_reset   = LoadTexture("assets/textures/buttons/button_normal_reset.png");
+    Texture2D texture_hovered_reset  = LoadTexture("assets/textures/buttons/button_hovered_reset.png");
+    Texture2D texture_normal_solve   = LoadTexture("assets/textures/buttons/button_normal_solve.png");
+    Texture2D texture_hovered_solve  = LoadTexture("assets/textures/buttons/button_hovered_solve.png");
+    Texture2D texture_normal_easy    = LoadTexture("assets/textures/buttons/button_normal_easy.png");
+    Texture2D texture_hovered_easy   = LoadTexture("assets/textures/buttons/button_hovered_easy.png");
+    Texture2D texture_normal_medium  = LoadTexture("assets/textures/buttons/button_normal_medium.png");
+    Texture2D texture_hovered_medium = LoadTexture("assets/textures/buttons/button_hovered_medium.png");
+    Texture2D texture_normal_expert  = LoadTexture("assets/textures/buttons/button_normal_expert.png");
+    Texture2D texture_hovered_expert = LoadTexture("assets/textures/buttons/button_hovered_expert.png");
+    Texture2D texture_normal_master  = LoadTexture("assets/textures/buttons/button_normal_master.png");
+    Texture2D texture_hovered_master = LoadTexture("assets/textures/buttons/button_hovered_master.png");
 
     std::function<void()> on_click_reset = [this]() { this->reset_board(); };
     std::function<void()> on_click_solve = [this]() { this->solve(); };
@@ -41,12 +51,12 @@ GameHandler::GameHandler(int tile_size, int screen_width, int screen_height) : t
         this->reset_board();
     };
 
-    Button reset_button( on_click_reset, texture_normal, texture_hovered, (Rectangle){0, 0, 32, 16} );
-    Button solve_button( on_click_solve, texture_normal, texture_hovered, (Rectangle){50, 10, 32, 16} );
-    Button diff_easy_button( on_click_diff_easy, texture_normal, texture_hovered, (Rectangle){90, 10, 32, 16} );
-    Button diff_medium_button( on_click_diff_medium, texture_normal, texture_hovered, (Rectangle){130, 10, 32, 16} );
-    Button diff_expert_button( on_click_diff_expert, texture_normal, texture_hovered, (Rectangle){170, 10, 32, 16} );
-    Button diff_master_button( on_click_diff_master, texture_normal, texture_hovered, (Rectangle){220, 10, 32, 16} );
+    Button reset_button( on_click_reset, texture_normal_reset, texture_hovered_reset, (Rectangle){64, 200, 32, 16} );
+    Button solve_button( on_click_solve, texture_normal_solve, texture_hovered_solve, (Rectangle){64, 250, 32, 16} );
+    Button diff_easy_button( on_click_diff_easy, texture_normal_easy, texture_hovered_easy, (Rectangle){64, 300, 32, 16} );
+    Button diff_medium_button( on_click_diff_medium, texture_normal_medium, texture_hovered_medium, (Rectangle){64, 350, 32, 16} );
+    Button diff_expert_button( on_click_diff_expert, texture_normal_expert, texture_hovered_expert, (Rectangle){64, 400, 32, 16} );
+    Button diff_master_button( on_click_diff_master, texture_normal_master, texture_hovered_master, (Rectangle){64, 450, 32, 16} );
 
     buttons = {reset_button, solve_button, diff_easy_button, diff_medium_button, diff_expert_button, diff_master_button};
 }
@@ -92,7 +102,7 @@ void GameHandler::draw()
 
 void GameHandler::solve()
 {
-    // but we actually need to go into a different state and do iterations, so that we can see real-time solving
+    solver.solve();
 }
 
 void GameHandler::set_board_width(int width_size)

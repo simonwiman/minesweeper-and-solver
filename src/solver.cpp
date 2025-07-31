@@ -26,7 +26,8 @@ void Solver::solve()
 
 void Solver::start_solve()
 {
-    board->activate_board(board->get_board_height()/2, board->get_board_width()/2);
+    if ( board->get_board_state() == UNACTIVE )
+        board->activate_board(board->get_board_height()/2, board->get_board_width()/2);
 }
 
 void Solver::solve_iteration()

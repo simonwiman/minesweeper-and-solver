@@ -5,19 +5,19 @@
 
 TextureHandler::TextureHandler(int tile_size)
 {
-    texture_tile_hidden = LoadTexture("assets/textures/tile_hidden.png");
-    texture_tile_bomb = LoadTexture("assets/textures/tile_bomb.png");
-    texture_tile_flag = LoadTexture("assets/textures/tile_flag.png");
-    texture_tile_hovered = LoadTexture("assets/textures/tile_hovered.png");
-    texture_tile_0 = LoadTexture("assets/textures/tile_0.png");
-    texture_tile_1 = LoadTexture("assets/textures/tile_1.png");
-    texture_tile_2 = LoadTexture("assets/textures/tile_2.png");
-    texture_tile_3 = LoadTexture("assets/textures/tile_3.png");
-    texture_tile_4 = LoadTexture("assets/textures/tile_4.png");
-    texture_tile_5 = LoadTexture("assets/textures/tile_5.png");
-    texture_tile_6 = LoadTexture("assets/textures/tile_6.png");
-    texture_tile_7 = LoadTexture("assets/textures/tile_7.png");
-    texture_tile_8 = LoadTexture("assets/textures/tile_8.png");
+    texture_tile_hidden = LoadTexture("assets/textures/tiles/tile_hidden.png");
+    texture_tile_bomb = LoadTexture("assets/textures/tiles/tile_bomb.png");
+    texture_tile_flag = LoadTexture("assets/textures/tiles/tile_flag.png");
+    texture_tile_hovered = LoadTexture("assets/textures/tiles/tile_hovered.png");
+    texture_tile_0 = LoadTexture("assets/textures/tiles/tile_0.png");
+    texture_tile_1 = LoadTexture("assets/textures/tiles/tile_1.png");
+    texture_tile_2 = LoadTexture("assets/textures/tiles/tile_2.png");
+    texture_tile_3 = LoadTexture("assets/textures/tiles/tile_3.png");
+    texture_tile_4 = LoadTexture("assets/textures/tiles/tile_4.png");
+    texture_tile_5 = LoadTexture("assets/textures/tiles/tile_5.png");
+    texture_tile_6 = LoadTexture("assets/textures/tiles/tile_6.png");
+    texture_tile_7 = LoadTexture("assets/textures/tiles/tile_7.png");
+    texture_tile_8 = LoadTexture("assets/textures/tiles/tile_8.png");
 
     assert((texture_tile_hidden.width == tile_size) && (texture_tile_hidden.height == tile_size));
     assert((texture_tile_bomb.width == tile_size) && (texture_tile_bomb.height == tile_size));

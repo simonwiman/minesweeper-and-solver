@@ -7,8 +7,7 @@
 #include "board.h"
 #include "texture_handler.h"
 #include "button.h"
-
-#include <iostream>
+#include "timer.h"
 
 
 class GameHandler
