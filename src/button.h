@@ -15,6 +15,7 @@ public:
     Texture2D get_texture_normal();
     Texture2D get_texture_hovered();
     Rectangle get_rect();
+    void unload_textures();
 
 private:
     Texture2D texture_normal;

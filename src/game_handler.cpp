@@ -119,3 +119,9 @@ void GameHandler::set_bombs(int nr_of_bombs)
 {
     bombs = nr_of_bombs;
 }
+
+GameHandler::~GameHandler()
+{
+    for (std::size_t i=0; i < buttons.size(); i++)
+        buttons[i].unload_textures();
+}

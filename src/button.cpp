@@ -36,3 +36,9 @@ Rectangle Button::get_rect()
 {
     return rect;
 }
+
+void Button::unload_textures()
+{
+    UnloadTexture(texture_normal);
+    UnloadTexture(texture_hovered);
+}

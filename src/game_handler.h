@@ -14,6 +14,7 @@ class GameHandler
 {
 public:
     GameHandler(int tile_size, int screen_width, int screen_height);
+    ~GameHandler();
     void update();
     void reset_board();
     void draw();

@@ -3,9 +3,9 @@
 
 int main()
 {    
-    const int screen_width = 1280;
+    const int screen_width  = 1280;
     const int screen_height = 720;
-    const int tile_size = 32;
+    const int tile_size     = 32;
     
     InitWindow(screen_width, screen_height, "Minesweeper");
     SetTargetFPS(60);
@@ -29,7 +29,5 @@ int main()
 2. Timer
 
 3. changed from vectors to arrays where applicable
-
-4. change graphics and add graphics to buttons
 
 */
