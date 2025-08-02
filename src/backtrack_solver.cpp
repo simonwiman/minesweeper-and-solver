@@ -118,7 +118,6 @@ void BacktrackSolver::backtrack(std::size_t n, const std::vector<std::pair<int, 
     }
     
     visited_tiles.erase(std::pair<int, int>(i, j));
-
 }
 
 std::vector<std::pair<int, int>> BacktrackSolver::find_current_choices()
@@ -157,7 +156,7 @@ void BacktrackSolver::add_adjacent_tiles(int i, int j, std::set<std::pair<int, i
     }
 }
 
-bool BacktrackSolver::tile_satisfied(int i, int j) // remove ?, can be good for testing (if you are not an idiot)
+bool BacktrackSolver::tile_satisfied(int i, int j)
 {
     int flagged_tiles = 0;
     

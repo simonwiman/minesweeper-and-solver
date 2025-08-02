@@ -28,6 +28,4 @@ int main()
 
 2. Timer
 
-3. changed from vectors to arrays where applicable
-
 */

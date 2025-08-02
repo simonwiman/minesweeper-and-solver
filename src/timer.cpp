@@ -18,3 +18,8 @@ double Timer::get_current_time()
 {
     return current_time;
 }
+
+void Timer::act_on_update()
+{
+    reset_time();
+}

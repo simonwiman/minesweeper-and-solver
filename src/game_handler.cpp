@@ -4,12 +4,13 @@
 #include <iostream>
 
 
-GameHandler::GameHandler(int tile_size, int screen_width, int screen_height) : tile_size(tile_size), screen_width(screen_width), screen_height(screen_height), time_spent(0), board_width(30), board_height(16), bombs(99), board(std::make_shared<Board>(tile_size, board_height, board_width, bombs)), solver(BacktrackSolver(board)), texture_handler(TextureHandler(tile_size))
+GameHandler::GameHandler(int tile_size, int screen_width, int screen_height) : tile_size(tile_size), screen_width(screen_width), screen_height(screen_height), time_spent(0), board_width(30), board_height(16), bombs(99), board(std::make_shared<Board>(tile_size, board_height, board_width, bombs)), solver(BacktrackSolver(board)), texture_handler(TextureHandler(tile_size)), timer(Timer())
 {
     const int first_tile_x_position = screen_width/2 - tile_size*board_width/2;
     const int first_tile_y_position = screen_height/2 - board_height*tile_size/2;
 
     board->init_board(first_tile_x_position, first_tile_y_position);
+    board->add_observer(&timer);
 
     Texture2D texture_normal_reset   = LoadTexture("assets/textures/buttons/button_normal_reset.png");
     Texture2D texture_hovered_reset  = LoadTexture("assets/textures/buttons/button_hovered_reset.png");
@@ -69,6 +70,9 @@ void GameHandler::update()
     {
         buttons[i].update();
     }
+
+    if ( board->get_board_state() == ACTIVE )
+        timer.update_time();
 }
 
 void GameHandler::reset_board()
@@ -80,7 +84,10 @@ void GameHandler::reset_board()
     const int first_tile_y_position = screen_height/2 - board_height*tile_size/2;
     
     board->init_board(first_tile_x_position, first_tile_y_position);
+    board->add_observer(&timer);
     solver.set_board(new_board);
+
+    timer.reset_time();
 }
 
 void GameHandler::draw()
@@ -98,6 +105,8 @@ void GameHandler::draw()
         }
 
     EndDrawing();
+
+    DrawText(TextFormat("%03.0f", timer.get_current_time()), 64, 150, 25, RED);
 }
 
 void GameHandler::solve()

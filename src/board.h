@@ -2,6 +2,8 @@
 
 #include "tile.h"
 #include <vector>
+#include "observer.h"
+
 
 typedef enum BoardState { UNACTIVE = 0, ACTIVE, DEAD, COMPLETE } BoardState;
 
@@ -23,6 +25,7 @@ public:
     bool game_complete();
     void flag_remaining();
     bool valid_index(int i, int j);
+    void add_observer(Observer* observer);
 
 private:
     const int tile_size;
@@ -31,9 +34,11 @@ private:
     int bombs;
     std::vector<std::vector<Tile>> tiles;
     BoardState board_state;
+    std::vector<Observer*> observers;
 
     void check_clicks();
     void init_bomb_counter(int i, int j);
     void open_adjacent_tiles(int i, int j);
     void open_remaining_bombs();
+    void notify_observers();
 };

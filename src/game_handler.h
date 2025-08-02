@@ -37,5 +37,6 @@ private:
     BacktrackSolver solver;
     TextureHandler texture_handler;
     std::array<Button, 6> buttons;
+    Timer timer;
     
 };

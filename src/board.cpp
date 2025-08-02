@@ -107,6 +107,7 @@ void Board::check_clicks()
             {
                 if (board_state == UNACTIVE)
                 {
+                    notify_observers();
                     activate_board(i, j);
                     break;
                 }
@@ -279,4 +280,15 @@ void Board::flag_remaining()
 bool Board::valid_index(int i, int j)
 {
     return (i >= 0) && (i < board_height) && (j >= 0) && (j < board_width);
+}
+
+void Board::add_observer(Observer* observer)
+{
+    observers.push_back(observer);
+}
+
+void Board::notify_observers()
+{
+    for (std::size_t i = 0; i < observers.size(); i++)
+        observers[i]->act_on_update();
 }
