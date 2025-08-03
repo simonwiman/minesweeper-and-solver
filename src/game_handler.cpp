@@ -12,6 +12,8 @@ GameHandler::GameHandler(int tile_size, int screen_width, int screen_height) : t
     board->init_board(first_tile_x_position, first_tile_y_position);
     board->add_observer(&timer);
 
+    solver.add_observer(this);
+
     Texture2D texture_normal_reset   = LoadTexture("assets/textures/buttons/button_normal_reset.png");
     Texture2D texture_hovered_reset  = LoadTexture("assets/textures/buttons/button_hovered_reset.png");
     Texture2D texture_normal_solve   = LoadTexture("assets/textures/buttons/button_normal_solve.png");
@@ -127,6 +129,12 @@ void GameHandler::set_board_height(int height_size)
 void GameHandler::set_bombs(int nr_of_bombs)
 {
     bombs = nr_of_bombs;
+}
+
+void GameHandler::act_on_update()
+{
+    timer.update_time();
+    draw();
 }
 
 GameHandler::~GameHandler()

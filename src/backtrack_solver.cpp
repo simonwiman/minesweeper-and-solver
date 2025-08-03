@@ -16,6 +16,7 @@ void BacktrackSolver::solve()
     while( board->get_board_state() == ACTIVE )
     {
         solve_iteration();
+        notify_observers();
 
         if ( board->game_complete() )
         {
@@ -93,7 +94,6 @@ void BacktrackSolver::backtrack(std::size_t n, const std::vector<std::pair<int, 
     {
         std::vector<bool> flag_layout = map_flags(unsolved_tiles);
         res.push_back(flag_layout);
-
         return;
     }
 
@@ -101,7 +101,6 @@ void BacktrackSolver::backtrack(std::size_t n, const std::vector<std::pair<int, 
     int j = unsolved_tiles[n].second;
     
     visited_tiles.insert(std::pair<int, int>(i, j));
-
 
     (*board->get_tiles())[i][j].set_is_flagged(true);
 
@@ -243,4 +242,15 @@ void BacktrackSolver::set_board(std::shared_ptr<Board> minesweeper_board)
 {
     simple_solver.set_board(minesweeper_board);
     board = minesweeper_board;
+}
+
+void BacktrackSolver::notify_observers()
+{
+    for (std::size_t i = 0; i < observers.size(); i++)
+        observers[i]->act_on_update();
+}
+
+void BacktrackSolver::add_observer(Observer* observer)
+{
+    observers.push_back(observer);
 }

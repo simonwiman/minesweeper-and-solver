@@ -10,7 +10,7 @@
 #include "timer.h"
 
 
-class GameHandler
+class GameHandler : public Observer
 {
 public:
     GameHandler(int tile_size, int screen_width, int screen_height);
@@ -19,6 +19,7 @@ public:
     void reset_board();
     void draw();
     void solve();
+    void act_on_update();
 
     void set_board_width(int width_size);
     void set_board_height(int height_size);
