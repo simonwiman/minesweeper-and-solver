@@ -10,7 +10,9 @@ BacktrackSolver::BacktrackSolver(std::shared_ptr<Board> minesweeper_board) : boa
 void BacktrackSolver::solve()
 {
     start_solve();
-    unflag_all();
+
+    if ( board->get_board_state() == ACTIVE )
+        unflag_all();
 
     while( board->get_board_state() == ACTIVE )
     {
