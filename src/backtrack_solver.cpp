@@ -4,8 +4,6 @@
 #include <set>
 #include <utility>
 
-#include <iostream> // debug
-
 
 BacktrackSolver::BacktrackSolver(std::shared_ptr<Board> minesweeper_board) : board(minesweeper_board), simple_solver(Solver(minesweeper_board)) {}
 
@@ -130,9 +128,7 @@ std::vector<std::pair<int, int>> BacktrackSolver::find_current_choices()
             assert( !((*board->get_tiles())[i][j].get_is_flagged() && (*board->get_tiles())[i][j].get_is_open()) );
 
             if ( (*board->get_tiles())[i][j].get_is_open() && (*board->get_tiles())[i][j].get_adjacent_bombs() )
-            {
                 add_adjacent_tiles(i, j, set_of_choices);
-            }
         }
     }
 
@@ -148,34 +144,9 @@ void BacktrackSolver::add_adjacent_tiles(int i, int j, std::set<std::pair<int, i
         for (int k=j-1; k <= j+1; k++)
         {
             if ( board->valid_index(n, k) && !((n == i) && (k == j)) && !(*board->get_tiles())[n][k].get_is_flagged() && !(*board->get_tiles())[n][k].get_is_open() )
-            {
                 set_of_choices.insert(std::pair<int, int>(n, k));
-            }
         }
     }
-}
-
-bool BacktrackSolver::tile_satisfied(int i, int j)
-{
-    int flagged_tiles = 0;
-    
-    for (int n=i-1; n <= i+1; n++)
-    {
-        for (int k=j-1; k <= j+1; k++)
-        {
-            if ( board->valid_index(n, k) && !((n == i) && (k == j)) && (*board->get_tiles())[n][k].get_is_flagged() && !(*board->get_tiles())[n][k].get_is_open() )
-            {
-                flagged_tiles++;
-            }
-        }
-    }
-
-    if ( flagged_tiles == (*board->get_tiles())[i][j].get_adjacent_bombs() )
-        return true;
-    
-    if ( flagged_tiles > (*board->get_tiles())[i][j].get_adjacent_bombs() )
-        std::cout << "too many flags" << "\n";
-    return false;
 }
 
 bool BacktrackSolver::tile_valid(int i, int j, std::set<std::pair<int, int>> &visited_tiles)

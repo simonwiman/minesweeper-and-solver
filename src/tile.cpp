@@ -3,16 +3,9 @@
 #include <cassert>
 
 
-Tile::Tile(Rectangle rect, bool is_open, bool is_bomb, bool is_flagged, bool is_hovered, int adjacent_bombs)
+Tile::Tile(Rectangle rect, bool is_open, bool is_bomb, bool is_flagged, bool is_hovered, int adjacent_bombs) : rect(rect), is_open(is_open), is_bomb(is_bomb), is_flagged(is_flagged), is_hovered(is_hovered), adjacent_bombs(adjacent_bombs)
 {
-    assert( !(is_open && is_flagged) );
-    
-    this->rect = rect;
-    this->is_open = is_open;
-    this->is_bomb = is_bomb;
-    this->is_flagged = is_flagged;
-    this->is_hovered = is_hovered;
-    this->adjacent_bombs = adjacent_bombs;
+    assert( !(is_open && is_flagged) );   
 }
 
 Rectangle Tile::get_rect()

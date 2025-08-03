@@ -1,8 +1,6 @@
 #include <cassert>
 #include "game_handler.h"
 
-#include <iostream>
-
 
 GameHandler::GameHandler(int tile_size, int screen_width, int screen_height) : tile_size(tile_size), screen_width(screen_width), screen_height(screen_height), time_spent(0), board_width(30), board_height(16), bombs(99), board(std::make_shared<Board>(tile_size, board_height, board_width, bombs)), solver(BacktrackSolver(board)), texture_handler(TextureHandler(tile_size)), timer(Timer())
 {

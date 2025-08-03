@@ -20,12 +20,3 @@ int main()
 
     CloseWindow();
 }
-
-
-/*
-
-1. Make gamhandler do solve iterations inbetween frames instead of solving entire board
-
-2. Timer
-
-*/

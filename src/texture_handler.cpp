@@ -1,7 +1,7 @@
 #include <raylib.h>
 #include "texture_handler.h"
 #include <cassert>
-#include <iostream> // debug
+
 
 TextureHandler::TextureHandler(int tile_size)
 {
@@ -43,31 +43,24 @@ void TextureHandler::draw_board(std::shared_ptr<Board> board)
     {
         for (int j=0; j < board->get_board_width(); j++)
         {
-            Rectangle rect = (*tiles)[i][j].get_rect();
-            bool is_open = (*tiles)[i][j].get_is_open();
-            bool is_flagged = (*tiles)[i][j].get_is_flagged();
-            bool is_bomb = (*tiles)[i][j].get_is_bomb();
-            bool is_hovered = (*tiles)[i][j].get_is_hovered();
+            Rectangle rect     = (*tiles)[i][j].get_rect();
+            bool is_open       = (*tiles)[i][j].get_is_open();
+            bool is_flagged    = (*tiles)[i][j].get_is_flagged();
+            bool is_bomb       = (*tiles)[i][j].get_is_bomb();
+            bool is_hovered    = (*tiles)[i][j].get_is_hovered();
             int adjacent_bombs = (*tiles)[i][j].get_adjacent_bombs();
-
-            // assert( !(is_open && is_flagged) );
             
             if (is_hovered && !is_open && !is_flagged)
-            {
                 DrawTextureV(texture_tile_hovered, (Vector2){rect.x, rect.y}, WHITE);
-            }
+            
             else if (!is_open && !is_flagged)
-            {
                 DrawTextureV(texture_tile_hidden, (Vector2){rect.x, rect.y}, WHITE);
-            }
+            
             else if (is_flagged)
-            {
                 DrawTextureV(texture_tile_flag, (Vector2){rect.x, rect.y}, WHITE);
-            }
+            
             else if (is_open && is_bomb)
-            {
                 DrawTextureV(texture_tile_bomb, (Vector2){rect.x, rect.y}, WHITE);
-            }
             else
             {
                 switch (adjacent_bombs)

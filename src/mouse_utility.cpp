@@ -1,12 +1,5 @@
 #include "mouse_utility.h"
 #include <raylib.h>
-#include <iostream> 
-
-
-void print_mouse_position()
-{
-    std::cout << "(" << GetMouseX() << ", " << GetMouseY() << ")\n";
-}
 
 
 bool mouse_overlap_rectangle(Rectangle rec)

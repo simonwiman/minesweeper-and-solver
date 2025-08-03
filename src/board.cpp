@@ -5,19 +5,13 @@
 #include <utility>
 #include <cassert>
 
-#include <iostream> // for debug
-
 
 Board::Board(int size, int height, int width, int nr_of_bombs) : tile_size(size), board_height(height), board_width(width), board_state(UNACTIVE)
 {
     if ( height*width - 9 < nr_of_bombs )
-    {
         bombs = height*width - 9;
-    }
     else
-    {
         bombs = nr_of_bombs;
-    }
 }
 
 const int Board::get_tile_size()
@@ -107,7 +101,6 @@ void Board::check_clicks()
             {
                 if (board_state == UNACTIVE)
                 {
-                    notify_observers();
                     activate_board(i, j);
                     break;
                 }
@@ -115,25 +108,21 @@ void Board::check_clicks()
                     open_tile(i, j);
             }
             if ( mouse_rclicked_rectangle(tiles[i][j].get_rect()) )
-            {
                 place_flag(i, j);
-            }
+
             if ( mouse_overlap_rectangle(tiles[i][j].get_rect()) )
-            {
                 tiles[i][j].set_is_hovered(true);
-            }
             else
-            {
                 tiles[i][j].set_is_hovered(false);
-            }
         }
     }
 }
 
 void Board::activate_board(int i, int j)
 {
+    notify_observers();
+
     board_state = ACTIVE;
- 
     std::set<std::pair<int, int>> occupied_indexes;
 
     for (int n=i-1; n <= i+1; n++)
@@ -141,9 +130,7 @@ void Board::activate_board(int i, int j)
         for (int k=j-1; k <= j+1; k++)
         {
             if ( valid_index(n, k) )
-            {
                 occupied_indexes.insert( (std::pair<int, int>){n, k} );
-            }
         }
     }
 
@@ -186,9 +173,7 @@ void Board::init_bomb_counter(int i, int j)
         for (int k=j-1; k <= j+1; k++)
         {
             if ( valid_index(n, k) && !((n == i) && (k == j)) && tiles[n][k].get_is_bomb() )
-            {
                 bomb_counter += 1;
-            }
         }
     }
     tiles[i][j].set_adjacent_bombs(bomb_counter);
@@ -229,9 +214,7 @@ void Board::open_tile(int i, int j)
 void Board::place_flag(int i, int j)
 {
     if ( !tiles[i][j].get_is_open() )
-    {
         tiles[i][j].update_flagged();
-    }
 }
 
 void Board::open_remaining_bombs()
@@ -241,9 +224,7 @@ void Board::open_remaining_bombs()
         for (int j=0; j < board_width; j++)
         {
             if ( tiles[i][j].get_is_bomb() )
-            {
                 tiles[i][j].set_is_open(true);
-            }
         }
     }
 }
@@ -255,9 +236,7 @@ bool Board::game_complete()
         for (int j=0; j < board_width; j++)
         {
             if ( !tiles[i][j].get_is_bomb() && !tiles[i][j].get_is_open() )
-            {
                 return false;
-            }
         }
     }
     return true;
@@ -270,9 +249,7 @@ void Board::flag_remaining()
         for (int j=0; j < board_width; j++)
         {
             if ( tiles[i][j].get_is_bomb() )
-            {
                 tiles[i][j].set_is_flagged(true);
-            }
         }
     }
 }

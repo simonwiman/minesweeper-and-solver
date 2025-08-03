@@ -3,8 +3,6 @@
 #include <unordered_map>
 #include <utility>
 
-#include <iostream> // for debug
-
 
 Solver::Solver(std::shared_ptr<Board> minesweeper_board) : board(minesweeper_board) {}
 
@@ -224,7 +222,6 @@ void Solver::educated_guess_click()
 
         board->open_tile(i, j);
     }
-    
 }
 
 int Solver::count_adj_clickable(int i, int j)
@@ -239,9 +236,7 @@ int Solver::count_adj_clickable(int i, int j)
             if ( board->valid_index(n, k) && !((n == i) && (k == j)) )
             {                
                 if ( !(*tiles)[n][k].get_is_open() && !(*tiles)[n][k].get_is_flagged() )
-                {
                     clickable++;
-                }
             }
         }
     }
@@ -281,9 +276,7 @@ std::pair<int, int> Solver::get_first_adj_clickable(int i, int j)
             if ( board->valid_index(n, k) && !((n == i) && (k == j)) )
             {                
                 if ( !(*tiles)[n][k].get_is_open() && !(*tiles)[n][k].get_is_flagged() )
-                {
                     return (std::pair<int, int>){n, k};
-                }
             }
         }
     }
