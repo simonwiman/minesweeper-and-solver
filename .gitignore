@@ -3,3 +3,5 @@ main.exe
 texture_handler.exe
 solver.exe
 backtrack_solver.exe
+button.exe
+game_handler.exe
