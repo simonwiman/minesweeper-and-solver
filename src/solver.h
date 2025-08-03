@@ -25,5 +25,5 @@ private:
     int count_adj_flagged(int i, int j);
     int count_adj_clickable(int i, int j);
     std::pair<int, int> get_first_adj_clickable(int i, int j);
-
+    
 };

@@ -10,6 +10,7 @@ BacktrackSolver::BacktrackSolver(std::shared_ptr<Board> minesweeper_board) : boa
 void BacktrackSolver::solve()
 {
     start_solve();
+    unflag_all();
 
     while( board->get_board_state() == ACTIVE )
     {
@@ -224,4 +225,18 @@ void BacktrackSolver::notify_observers()
 void BacktrackSolver::add_observer(Observer* observer)
 {
     observers.push_back(observer);
+}
+
+void BacktrackSolver::unflag_all()
+{
+    for (int i=0; i < board->get_board_height(); i++)
+    {
+        for (int j=0; j < board->get_board_width(); j++)
+        {
+            if ( (*board->get_tiles())[i][j].get_is_flagged() )
+            {
+                (*board->get_tiles())[i][j].set_is_flagged(false);
+            }
+        }
+    }    
 }

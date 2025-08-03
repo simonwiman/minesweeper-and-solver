@@ -30,5 +30,6 @@ private:
     std::vector<bool> map_flags(const std::vector<std::pair<int, int>> &tiles);
     bool backtrack_iteration();
     void notify_observers();
+    void unflag_all();
 
 };
